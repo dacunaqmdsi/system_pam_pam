@@ -58,7 +58,6 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                 alertify.error("Something went wrong. Please try again.");
             });
     }
-
 </script>
 <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg" id="printedArea">
     <!-- Header -->
@@ -82,6 +81,7 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                 <th class="border p-2">Request Item</th>
                 <th class="border p-2">Variety</th>
                 <th class="border p-2">Request Quantity</th>
+                <th class="border p-2">Specification</th>
                 <!-- <th class="border p-2">Price</th>
                 <th class="border p-2">Total</th> -->
                 <th class="border p-2">Select Item</th>
@@ -119,6 +119,23 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                         <!-- <td class="border p-2 text-center">₱<?= number_format($item['r_item_price'], 2) ?></td>
                         <td class="border p-2 text-center">₱<?= number_format($total_price, 2) ?></td> -->
                         <!-- <td class="border p-2 text-center"><input type="number" value="<?= $item['r_finance_price'] ?>" placeholder="Price" class="bg-gray-200" id="r_finance_price<?= $item['r_item_id'] ?>" name="r_finance_price" /> -->
+
+                        <td class="border p-2 text-center">
+                            <?php
+                            $details = [];
+
+                            if (!empty($item['r_size'])) $details[] = $item['r_size'];
+                            if (!empty($item['r_brand'])) $details[] = $item['r_brand'];
+                            if (!empty($item['r_unit'])) $details[] = $item['r_unit'];
+                            if (!empty($item['r_paper_type'])) $details[] = $item['r_paper_type'];
+                            if (!empty($item['r_thickness'])) $details[] = $item['r_thickness'];
+
+                            echo !empty($details) ? implode(' - ', $details) : 'N/A';
+                            ?>
+                        </td>
+
+
+                        <!-- $item['r_finance_price'] -->
                         <td class="border p-2 text-center">
                             <select name="supplier_id" id="supplier_id" class="form-select">
                                 <option value="0">Select Supplier</option>
@@ -128,12 +145,14 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                                 $result = $q->get_result();
 
                                 while ($rs = $result->fetch_assoc()) {
-                                    echo '<option value="' . $rs['id'] . '" data-price="' . htmlspecialchars($rs['price']) . '">' .
-                                            htmlspecialchars($rs['supplier_name']) . ' - ' .
-                                            htmlspecialchars($rs['item_name']) . ' (₱' . htmlspecialchars($rs['price']) . ') - Stock Available ' .
-                                            htmlspecialchars($rs['qty']) .
+                                    $sel = ($rs['price'] == $item['r_finance_price']) ? 'selected' : '';
+                                    echo '<option ' . $sel . ' value="' . $rs['id'] . '" data-price="' . htmlspecialchars($rs['price']) . '">' .
+                                        htmlspecialchars($rs['supplier_name']) . ' - ' .
+                                        htmlspecialchars($rs['item_name']) . ' (₱' . htmlspecialchars($rs['price']) . ') - Stock Available ' .
+                                        htmlspecialchars($rs['qty']) .
                                         '</option>';
                                 }
+
                                 ?>
                             </select>
 

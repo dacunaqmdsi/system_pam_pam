@@ -1,4 +1,6 @@
-<?php include "components/header.php"; ?>
+<?php include "components/header.php";
+$conn = mysqli_connect("localhost", "root", "", "pam");
+?>
 <div class="flex justify-between items-center bg-white p-4 mb-6 rounded-md shadow-md">
     <h2 class="text-lg font-semibold text-gray-700">Supply Request</h2>
     <div class="flex items-center space-x-3">
@@ -167,10 +169,10 @@
                 <h2 class="text-xl font-bold mb-4" id="asset_name">Shopping Cart</h2>
                 <div id="cartItems" class="mb-4">
 
-                    <input type="text" id="add_id" name="add_id">
+                    <input type="text" hidden id="add_id" name="add_id">
 
 
-                    <div class="relative mb-4">
+                    <div hidden class="relative mb-4">
                         <input type="text" id="asset_id" name="asset_id" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                         <label for="asset_id" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Asset ID</label>
                     </div>
@@ -189,6 +191,86 @@
                         </select>
                         <label for="variety" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Specification</label>
                     </div>
+
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Specification (Size)</label>
+                        <select name="size" id="size" class="w-full p-2 border rounded-md">
+                            <option value="">Select Size if any</option>
+                            <option value="Short">Short</option>
+                            <option value="Long">Long</option>
+                            <option value="A4">A4</option>
+                            <option value="A3">A3</option>
+                            <option value="Letter">Letter</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Tabloid">Tabloid</option>
+
+                            <!-- Additional general sizes -->
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                            <option value="Extra Large">Extra Large</option>
+
+                            <!-- Optional specialized formats -->
+                            <option value="Executive">Executive</option>
+                            <option value="Folio">Folio</option>
+                            <option value="Statement">Statement</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Specification (Brand)</label>
+                        <select name="brand" id="brand" class="w-full p-2 border rounded-md">
+                            <option value="">Select Brand if any</option>
+                            <option value="Hardcopy">Hardcopy</option>
+                            <option value="Brand1">Brand1</option>
+                            <option value="Brand2">Brand2</option>
+                            <option value="Brand3">Brand3</option>
+                            <!-- Add more brands as required -->
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Specification (Unit)</label>
+                        <select name="unit" id="unit" class="w-full p-2 border rounded-md">
+                            <option value="">Select Unit if any</option>
+                            <option value="PC">Piece (PC)</option>
+                            <option value="Ream">Ream</option>
+                            <option value="Box">Box</option>
+                            <option value="Pack">Pack</option>
+                            <!-- Add more units as required -->
+                        </select>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Specification (Paper Type)</label>
+                        <select name="paper_type" id="paper_type" class="w-full p-2 border rounded-md">
+                            <option value="">Select Paper Type if any</option>
+                            <option value="Copier">Copier</option>
+                            <option value="Multipurpose">Multipurpose</option>
+                            <option value="Digital">Digital</option>
+                            <option value="Glossy">Glossy</option>
+                            <option value="Matte">Matte</option>
+                            <!-- Add more paper types as required -->
+                        </select>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Specification (Thickness)</label>
+                        <select name="thickness" id="thickness" class="w-full p-2 border rounded-md">
+                            <option value="">Select Thickness if any</option>
+                            <option value="70gsm">70gsm</option>
+                            <option value="80gsm">80gsm</option>
+                            <option value="90gsm">90gsm</option>
+                            <option value="100gsm">100gsm</option>
+                            <option value="120gsm">120gsm</option>
+                            <!-- Add more thickness options as required -->
+                        </select>
+                    </div>
+
+
 
 
                     <div hidden class="relative mb-4">
@@ -277,6 +359,16 @@
                             let price = parseFloat(item.price) || 0;
                             let specification = item.specification;
                             let specification_array = item.specification_array;
+                            let size = item.size;
+                            let brand = item.brand;
+                            let unit = item.unit;
+                            let paper_type = item.paper_type;
+                            let thickness = item.thickness;
+
+                            
+
+
+
 
                             let subtotal = price * (item.cart_qty || 0);
                             totalItems += item.cart_qty;

@@ -453,6 +453,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $qty = $_POST['qty'];
         $variety = $_POST['variety'];
         $specification = $_POST['specification'];
+        $size = $_POST['size'];
+        $brand = $_POST['brand'];
+        $unit = $_POST['unit'];
+        $paper_type = $_POST['paper_type'];
+        $thickness = $_POST['thickness'];
+
+
+
+
 
 
         // Build Specification JSON
@@ -469,7 +478,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
 
-        $result = $db->AddCart($add_id, $asset_id, $qty, $variety, $specification, $specification_array);
+        $result = $db->AddCart($add_id, $asset_id, $qty, $variety, $specification, $specification_array, $size, $brand, $unit, $paper_type, $thickness);
 
         if ($result == "success") {
             echo json_encode(["status" => 200, "message" => "Successfully Added"]);
@@ -512,9 +521,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $cart_variety = $item['cart_variety'];
                         $r_specification = $item['specification'];
                         $r_specification_array = $item['specification_array'];
+                        $size = $item['size'];
+                        $brand = $item['brand'];
+                        $unit = $item['unit'];
+                        $paper_type = $item['paper_type'];
+                        $thickness = $item['thickness'];
+
+                        
+
+
+
 
                         // Pass the valid purchase ID
-                        $db->addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety,  $r_specification, $r_specification_array);
+                        $db->addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety,  $r_specification, $r_specification_array, $size, $brand, $unit, $paper_type, $thickness);
                     }
                 }
             } else {
