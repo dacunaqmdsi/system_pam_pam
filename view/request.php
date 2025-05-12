@@ -14,6 +14,22 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                 <span class="material-icons text-3xl">account_circle</span>
             <?php endif; ?>
         </div>
+        <div>
+            <?php
+            if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") {
+
+                echo '';
+            }
+            // here abay
+            ?>
+
+
+            icon
+            darren
+            list of na approved..
+
+            descending order.
+        </div>
         <span class="text-gray-700 font-medium">
             <?php echo ucfirst($On_Session[0]['fullname']); ?>
         </span>
@@ -365,7 +381,7 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                             let paper_type = item.paper_type;
                             let thickness = item.thickness;
 
-                            
+
 
 
 

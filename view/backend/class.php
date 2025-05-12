@@ -443,6 +443,23 @@ class global_class extends db_connect
         }
     }
 
+    public function fetch_all_assets_procurment2()
+    {
+        $query = $this->conn->prepare("SELECT assets_item.*,categories.type, categories.category_name,categories.id as cat_id,subcategories.subcategory_name,subcategories.id as sub_id,offices.office_name,offices.id as off_id
+        FROM `assets_item`
+        LEFT JOIN categories ON categories.id = assets_item.category_id 
+        LEFT JOIN subcategories ON subcategories.id = assets_item.subcategory_id 
+        LEFT JOIN offices ON offices.id = assets_item.office_id
+        where (condition_status = 'New' OR condition_status = 'Good') AND(`status` = 'Available' OR `status` = 'Disposed')
+
+        ");
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
+
 
 
     public function AddCart($add_id, $asset_id, $qty, $variety, $specification, $specification_array, $size, $brand, $unit, $paper_type, $thickness)

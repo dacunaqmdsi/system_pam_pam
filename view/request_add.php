@@ -30,7 +30,7 @@
         let nextId = 1;
 
         // Fetch the next ID from the server
-        fetch('manager_assets_query.php')
+        fetch('manager_assets_query2.php')
             .then(response => response.json())
             .then(data => {
                 nextId = data.next_id || 1;
