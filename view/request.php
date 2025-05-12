@@ -24,120 +24,152 @@
     <input type="text" id="searchInput" placeholder="Search users..."
         class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
 </div>
-<!-- User Table Card -->
-<div class="max-w-7xl mx-auto grid grid-cols-12 gap-4">
-    <?php if ($_SESSION['role'] == "Head Library" || $_SESSION['role'] == "Head Basic Education" || $_SESSION['role'] == "Head IACEPO & NSTP") { ?>
-    <?php } else { ?>
-        <div class="col-span-8 bg-white p-4 rounded-xl shadow-md">
-            <h2 class="text-xl font-bold mb-4">Item list</h2>
-            <div class="flex space-x-2 mb-4">
-                <button class="px-4 py-2 bg-blue-500 text-white rounded" id="filterAll">All</button>
-                <?php
-                $fetch_all_category = $db->fetch_all_category();
-                if ($fetch_all_category->num_rows > 0):
-                    while ($category = $fetch_all_category->fetch_assoc()):
-                ?>
-                        <button class="px-4 py-2 bg-gray-200 rounded category-filter" data-category_id='<?= $category['id'] ?>'><?= $category['category_name'] ?></button>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p class="p-2 text-center">No record found.</p>
-                <?php endif; ?>
-            </div>
-            <div class="grid grid-cols-3 gap-4 overflow-y-auto max-h-[600px]" id="assetsContainer">
+<script>
+    function ajax_fn(url, elementId) {
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById(elementId).innerHTML = "";
+                document.getElementById(elementId).innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
 
-                <?php
-                $fetch_all_assets = $db->fetch_all_assets_procurment();
-                if ($fetch_all_assets->num_rows > 0):
-                    while ($assets = $fetch_all_assets->fetch_assoc()):
-                ?>
-                        <div class="border p-4 rounded-xl shadow-md asset-item" data-category_id='<?= $assets['category_id'] ?>'>
-                            <?php if (!empty($assets['image'])): ?>
-                                <!-- <img src="../uploads/images/<?php echo htmlspecialchars($assets['image']); ?>"
-                                alt="Profile Picture"
-                                class="rounded-md mb-2 w-full h-40 object-cover"> -->
-                                <div class="cursor-pointer togglerViewCart"
+    function save_price(r_item_id) {
+        var r_finance_price = document.getElementById('r_finance_price' + r_item_id).value;
+        ajax_fn('procurement_receipt_save.php?r_item_id=' + r_item_id + '&r_finance_price=' + r_finance_price, 'tmp');
+
+    }
+</script>
+<? //include('request_add.php'); 
+?>
+<div id="mainC">
+    <!-- <button onclick="ajax_fn('request_add.php','mainC');" class="bg-red-500 text-white py-2 px-4 text-sm rounded-lg flex items-center hover:bg-red-600 transition duration-300 mb-4">
+    <span class="material-icons mr-2 text-base">add</span>
+    Add Assets
+</button> -->
+    <a href="request_add">Add Item</a>
+    <!-- User Table Card -->
+    <div class="max-w-9xl mx-auto grid grid-cols-12 gap-4">
+        <?php if ($_SESSION['role'] == "Head Library" || $_SESSION['role'] == "Head Basic Education" || $_SESSION['role'] == "Head IACEPO & NSTP") { ?>
+        <?php } else { ?>
+            <div class="col-span-8 bg-white p-4 rounded-xl shadow-md">
+                <h2 class="text-xl font-bold mb-4">Item list</h2>
+                <div class="flex space-x-2 mb-4">
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded" id="filterAll">All</button>
+                    <?php
+                    $fetch_all_category = $db->fetch_all_category();
+                    if ($fetch_all_category->num_rows > 0):
+                        while ($category = $fetch_all_category->fetch_assoc()):
+                            $category_name = $category['category_name'];
+                            if ($category_name == "Furniture") {
+                                $category_name .= " (Assets)";
+                            } else if ($category_name == "Appliances") {
+                                $category_name .= " (Assets)";
+                            } else {
+                                $category_name .= " (Off. Supplies)";
+                            }
+                    ?>
+                            <button class="px-4 py-2 bg-gray-200 rounded category-filter" data-category_id='<?= $category['id'] ?>'><?= $category_name ?></button>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p class="p-2 text-center">No record found.</p>
+                    <?php endif; ?>
+                </div>
+                <div class="grid grid-cols-3 gap-4 overflow-y-auto max-h-[600px]" id="assetsContainer">
+                    <?php
+                    $fetch_all_assets = $db->fetch_all_assets_procurment();
+                    if ($fetch_all_assets->num_rows > 0):
+                        while ($assets = $fetch_all_assets->fetch_assoc()):
+                    ?>
+                            <div class="border p-4 rounded-xl shadow-md asset-item" data-category_id='<?= $assets['category_id'] ?>'>
+                                <?php if (!empty($assets['image'])): ?>
+                                    <!-- <div class="cursor-pointer togglerViewCart"
+                                        data-asset_id='<?= $assets['id'] ?>'
+                                        data-name='<?= ucfirst($assets['name']) ?>'
+                                        data-variety='<?= $assets['variety'] ?>'>
+                                        <img src="../uploads/images/<?php echo htmlspecialchars($assets['image']); ?>"
+                                            alt="Profile Picture"
+                                            class="rounded-md mb-2 w-full h-40 object-cover">
+                                    </div> -->
+                                <?php else: ?>
+                                    <!-- <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i> -->
+                                <?php endif; ?>
+                                <h3 class="font-bold"><?php echo htmlspecialchars(ucfirst($assets['name'])); ?></h3>
+                                <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart"
                                     data-asset_id='<?= $assets['id'] ?>'
                                     data-name='<?= ucfirst($assets['name']) ?>'
                                     data-variety='<?= $assets['variety'] ?>'>
-                                    <img src="../uploads/images/<?php echo htmlspecialchars($assets['image']); ?>"
-                                        alt="Profile Picture"
-                                        class="rounded-md mb-2 w-full h-40 object-cover">
-                                </div>
-                            <?php else: ?>
-                                <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i>
-                            <?php endif; ?>
-                            <h3 class="font-bold"><?php echo htmlspecialchars(ucfirst($assets['name'])); ?></h3>
-                            <!-- <p class="text-gray-600">₱<?php echo htmlspecialchars(number_format($assets['price'], 2)); ?></p> -->
-                            <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart"
-                                data-asset_id='<?= $assets['id'] ?>'
-                                data-name='<?= ucfirst($assets['name']) ?>'
-                                data-variety='<?= $assets['variety'] ?>'>
-                                <span class="material-icons align-middle mr-1">add</span>
-                            </button>
-
-                        </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p class="p-2 text-center">No record found.</p>
-                <?php endif; ?>
+                                    <span class="material-icons align-middle mr-1">add</span>
+                                </button>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p class="p-2 text-center">No record found.</p>
+                    <?php endif; ?>
+                </div>
             </div>
-        </div>
-        <div class="col-span-4 bg-white p-4 rounded-xl shadow-md">
-            <h2 class="text-xl font-bold mb-4">Request Summary</h2>
-            <div id="cartItemsList" class="mb-2">
-                <!-- Cart items will be injected here -->
+            <div class="col-span-4 bg-white p-4 rounded-xl shadow-md">
+                <h2 class="text-xl font-bold mb-4">Request Summary</h2>
+                <div id="cartItemsList" class="mb-2">
+                    <!-- Cart items will be injected here -->
+                </div>
+                <p hidden class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p>
+                <button class="mt-4 w-full bg-green-500 text-white py-2 rounded " id="confirmRequest">Send Request</button>
             </div>
-            <p hidden class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p>
-            <!-- id="btnSendRequest" -->
-            <button class="mt-4 w-full bg-green-500 text-white py-2 rounded " id="confirmRequest">Send Request</button>
-        </div>
-    <?php } ?>
-    <!-- Cart Section -->
-</div>
-
-<script>
-    $(document).ready(function() {
-        $('#userTable').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            info: true
-        });
-    });
-</script>
-
-
-<!-- User Table Card -->
-<div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
-    <div class="overflow-x-auto">
-        <table id="userTable" class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="bg-gray-100 text-gray-700">
-                <tr>
-                    <th class="p-3">#</th>
-                    <th class="p-3">Invoice</th>
-                    <th class="p-3">Request By</th>
-                    <!-- <th class="p-3">Designation</th> -->
-                    <th class="p-3">Request Date</th>
-                    <th class="p-3">Status</th>
-                    <th class="p-3 text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php include "backend/end-points/request_list.php"; ?>
-            </tbody>
-        </table>
+        <?php } ?>
     </div>
-</div>
-<!-- Modal -->
-<div id="cartModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center" style="display:none;">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
-        <form id="frmAddTocart">
-            <h2 class="text-xl font-bold mb-4" id="asset_name">Shopping Cart</h2>
-            <div id="cartItems" class="mb-4">
 
-                <input hidden type="text" id="add_id" name="add_id">
 
-                <!-- <div class="relative mb-4" >
+    <script>
+        $(document).ready(function() {
+            $('#userTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true
+            });
+        });
+    </script>
+
+
+    <!-- User Table Card -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
+        <div class="overflow-x-auto">
+            <table id="" class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="bg-gray-100 text-gray-700">
+                    <tr>
+                        <th class="p-3">#</th>
+                        <th class="p-3">Invoice</th>
+                        <th class="p-3">Request By</th>
+                        <!-- <th class="p-3">Designation</th> -->
+                        <th class="p-3">Request Date</th>
+                        <th class="p-3">Status</th>
+                        <th class="p-3 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php include "backend/end-points/request_list.php"; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center" style="display:none;">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <form id="frmAddTocart">
+                <h2 class="text-xl font-bold mb-4" id="asset_name">Shopping Cart</h2>
+                <div id="cartItems" class="mb-4">
+
+                    <input hidden type="text" id="add_id" name="add_id">
+
+                    <!-- <div class="relative mb-4" >
                 <input type="text" id="search_user_fullname" name="search_user_fullname" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                 <label for="search_user_fullname" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Fullname</label>
                 <div id="employeeSuggestions" class="absolute left-0 bg-white border border-gray-300 rounded-md shadow-md w-full hidden mt-1 z-50"></div>
@@ -154,52 +186,54 @@
                 <input readonly type="text" id="add_user_designation" name="user_designation" class="w-full p-2 border rounded-md" required>
             </div> -->
 
-                <div class="relative mb-4" hidden>
-                    <input type="text" id="asset_id" name="asset_id" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
-                    <label for="asset_id" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Asset ID</label>
-                </div>
-
-                <div class="relative mb-4">
-                    <input type="text" id="qty" name="qty" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
-                    <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Quantity</label>
-                </div>
-                <div class="relative mb-4">
-                    <input type="text" id="varietyName" hidden>
-                    <select id="variety" name="variety" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                        <option value="" disabled selected hidden>--Select--</option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
-                    </select>
-                    <label for="variety" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Specification</label>
-                </div>
-
-
-                <div hidden class="relative mb-4">
-                    <input type="text" id="specification" name="specification" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
-                    <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">More spefication details</label>
-                </div>
-
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Specification</label>
-                    <input type="text" id="specification_name" name="specification_name" class="w-full p-2 border rounded-md">
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">More Specification</label>
-                    <div id="specification-values-container">
-                        <input type="text" name="specification_name_value[]" class="w-full p-2 mb-2 border rounded-md">
+                    <div class="relative mb-4" hidden>
+                        <input type="text" id="asset_id" name="asset_id" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
+                        <label for="asset_id" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Asset ID</label>
                     </div>
-                    <button type="button" class="add-specification-value mt-2 text-blue-500">Add Another Specification</button>
+
+                    <div class="relative mb-4">
+                        <input type="text" id="qty" name="qty" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
+                        <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Quantity</label>
+                    </div>
+                    <div class="relative mb-4">
+                        <input type="text" id="varietyName" hidden>
+                        <select id="variety" name="variety" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <option value="" disabled selected hidden>--Select--</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                        </select>
+                        <label for="variety" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Specification</label>
+                    </div>
+
+
+                    <div hidden class="relative mb-4">
+                        <input type="text" id="specification" name="specification" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
+                        <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">More spefication details</label>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Specification</label>
+                        <input type="text" id="specification_name" name="specification_name" class="w-full p-2 border rounded-md">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">More Specification</label>
+                        <div id="specification-values-container">
+                            <input type="text" name="specification_name_value[]" class="w-full p-2 mb-2 border rounded-md">
+                        </div>
+                        <button type="button" class="add-specification-value mt-2 text-blue-500">Add Another Specification</button>
+                    </div>
+
+
                 </div>
-
-
-            </div>
-            <button type="submit" id="BtnaddToCart" class="px-4 py-2 bg-green-500 text-white rounded">Add to cart</button>
-            <button type="button" id="closeCartModal" class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
-        </form>
+                <button type="submit" id="BtnaddToCart" class="px-4 py-2 bg-green-500 text-white rounded">Add to cart</button>
+                <button type="button" id="closeCartModal" class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
+            </form>
+        </div>
     </div>
+
 </div>
 <!-- MODAL REQUEST SECION -->
 <div id="sendRequestModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center" style="display:none;">
@@ -232,6 +266,8 @@
         </div>
     </div>
 </div>
+
+
 <script>
     $(document).ready(function() {
         let globalCartItems = []; // Store cart items globally

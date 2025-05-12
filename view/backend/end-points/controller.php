@@ -191,7 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(["status" => 400, "message" => $result]);
         }
     } else if ($_POST['requestType'] == 'AddAssets') {
-
         $uploadDir = "../../../uploads/images/";
 
         function generateUniqueFilename($file, $prefix)
@@ -205,12 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
             $maxFileSize = 10 * 1024 * 1024; // 10MB
 
-            if ($file['error'] !== UPLOAD_ERR_OK) {
-                return null;
-            }
-
-            // Ensure the temp file exists before checking MIME type
-            if (!file_exists($file['tmp_name'])) {
+            if ($file['error'] !== UPLOAD_ERR_OK || !file_exists($file['tmp_name'])) {
                 return null;
             }
 
@@ -225,22 +219,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = generateUniqueFilename($file, $prefix);
             $destination = $uploadDir . $fileName;
 
-            if (move_uploaded_file($file['tmp_name'], $destination)) {
-                return $fileName;
-            }
-            return null;
+            return move_uploaded_file($file['tmp_name'], $destination) ? $fileName : null;
         }
 
-
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
-
+        // Handle file upload
         $assets_image = $_FILES['assets_img'] ?? null;
-
         $assets_imageName = $assets_image ? handleFileUpload($assets_image, $uploadDir, "Assets") : null;
 
-        // Sanitize and collect the form input values
+        // Sanitize and collect form input values
         $assets_code = htmlspecialchars(trim($_POST['assets_code'] ?? ''));
         $assets_name = htmlspecialchars(trim($_POST['assets_name'] ?? ''));
         $qty = htmlspecialchars(trim($_POST['qty'] ?? ''));
@@ -252,54 +238,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $assets_description = htmlspecialchars(trim($_POST['assets_description'] ?? ''));
         $assets_price = htmlspecialchars(trim($_POST['assets_price'] ?? ''));
 
-
-        // size,brand,unit,paper_type,thickness
+        // Optional fields
         $size = htmlspecialchars(trim($_POST['size'] ?? ''));
         $brand = htmlspecialchars(trim($_POST['brand'] ?? ''));
         $unit = htmlspecialchars(trim($_POST['unit'] ?? ''));
         $paper_type = htmlspecialchars(trim($_POST['paper_type'] ?? ''));
         $thickness = htmlspecialchars(trim($_POST['thickness'] ?? ''));
 
-
         $assets_variety_name = htmlspecialchars(trim($_POST['assets_variety_name'] ?? ''));
-        $assets_variety_values = isset($_POST['assets_variety_value']) ? $_POST['assets_variety_value'] : [];
+        $assets_variety_values = $_POST['assets_variety_value'] ?? [];
 
-        if (!empty($assets_variety_name) && !empty($assets_variety_values)) {
-            $variety_json = json_encode([
-                'name' => $assets_variety_name,
-                'values' => $assets_variety_values
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
-            $variety_json = null;
-        }
+        $variety_json = (!empty($assets_variety_name) && !empty($assets_variety_values))
+            ? json_encode(['name' => $assets_variety_name, 'values' => $assets_variety_values], JSON_UNESCAPED_UNICODE)
+            : null;
 
+        // Determine which method to call based on is_item
+        $is_item = $_POST['is_item'] ?? false;
 
+        $result = $is_item
+            ? $db->AddAssets2(
+                $assets_imageName,
+                $assets_code,
+                $assets_name,
+                $assets_Office,
+                $assets_category,
+                $assets_subcategory,
+                $assets_condition,
+                $assets_status,
+                $assets_description,
+                $assets_price,
+                $variety_json,
+                $size,
+                $brand,
+                $unit,
+                $paper_type,
+                $thickness,
+                $qty
+            )
+            : $db->AddAssets(
+                $assets_imageName,
+                $assets_code,
+                $assets_name,
+                $assets_Office,
+                $assets_category,
+                $assets_subcategory,
+                $assets_condition,
+                $assets_status,
+                $assets_description,
+                $assets_price,
+                $variety_json,
+                $size,
+                $brand,
+                $unit,
+                $paper_type,
+                $thickness,
+                $qty
+            );
 
-        $result = $db->AddAssets(
-            $assets_imageName,
-            $assets_code,
-            $assets_name,
-            $assets_Office,
-            $assets_category,
-            $assets_subcategory,
-            $assets_condition,
-            $assets_status,
-            $assets_description,
-            $assets_price,
-            $variety_json,
-            $size,
-            $brand,
-            $unit,
-            $paper_type,
-            $thickness,
-            $qty
-        );
-
-        if ($result == "success") {
-            echo json_encode(["status" => 200, "message" => "Successfully Added"]);
-        } else {
-            echo json_encode(["status" => 400, "message" => $result]);
-        }
+        echo json_encode([
+            "status" => $result === "success" ? 200 : 400,
+            "message" => $result === "success" ? "Successfully Added" : $result
+        ]);
     } else if ($_POST['requestType'] == 'UpdateAssets') {
 
         $uploadDir = "../../../uploads/images/";
@@ -542,13 +541,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         session_start();
         $received_by = intval($_SESSION['id']);
+        $recieved_number = $_POST['recieved_number'];
         $asset_name = $_POST['asset_name'];
         $asset_description = $_POST['asset_description'];
         $asset_supplier_name = $_POST['asset_supplier_name'];
         $asset_supplier_company = $_POST['asset_supplier_company'];
         $asset_qty = $_POST['asset_qty'];
 
-        $result = $db->recordLogs($received_by, $asset_name, $asset_description, $asset_supplier_name, $asset_supplier_company, $asset_qty);
+        $result = $db->recordLogs($received_by, $asset_name, $asset_description, $asset_supplier_name, $asset_supplier_company, $asset_qty, $recieved_number);
 
         if ($result == "success") {
             echo json_encode(["status" => 200, "message" => "Successfully Added"]);

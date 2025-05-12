@@ -28,7 +28,8 @@
     <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
         <i class="material-icons text-lg">search</i>
     </span>
-    <input type="text" id="searchInput" placeholder="Search users..." class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
+    <input type="text" id="searchInput" placeholder="Search users..." 
+        class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
 </div>
 <script>
     $(document).ready(function() {
@@ -53,18 +54,19 @@
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
                     <th class="p-3">#</th>
+                    <th class="p-3">Request ID Number</th>
                     <th class="p-3">Received Date</th>
                     <th class="p-3">Assets Name</th>
                     <th class="p-3">Assets Description</th>
-                    <th class="p-3">Supplier Name</th>
-                    <th class="p-3">Supplier Company</th>
+                    <!-- <th class="p-3">Supplier Name</th>
+                    <th class="p-3">Supplier Company</th> -->
                     <th class="p-3">Quantity</th>
                     <th class="p-3">Recieved By</th>
                     <th class="p-3">Actions</th>
-
-
-
-
+                   
+                    
+                    
+                   
                 </tr>
             </thead>
             <tbody>
@@ -94,6 +96,10 @@
 
 
             <div class="relative mb-4">
+                <input type="text" id="recieved_number" name="recieved_number" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
+                <label for="asset_name" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Request ID Number</label>
+            </div>
+            <div class="relative mb-4">
                 <input type="text" id="asset_name" name="asset_name" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                 <label for="asset_name" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Asset Name</label>
             </div>
@@ -103,21 +109,26 @@
                 <label for="asset_description" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Description</label>
             </div>
 
-
-            <div class="relative mb-4">
-                <input type="text" id="asset_supplier_name" name="asset_supplier_name" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
-                <label for="asset_supplier_name" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Supplier Name</label>
-            </div>
-
-
-            <div class="relative mb-4">
-                <input type="text" id="asset_supplier_company" name="asset_supplier_company" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
-                <label for="asset_supplier_company" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Supplier Company</label>
-            </div>
-
             <div class="relative mb-4">
                 <input type="text" id="asset_qty" name="asset_qty" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                 <label for="asset_qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Quantity</label>
+            </div>
+
+
+
+            <div hidden>
+                <div class="relative mb-4">
+                    <input type="text" id="asset_supplier_name" name="asset_supplier_name" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
+                    <label for="asset_supplier_name" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Supplier Name</label>
+                </div>
+
+
+                <div class="relative mb-4">
+                    <input type="text" id="asset_supplier_company" name="asset_supplier_company" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
+                    <label for="asset_supplier_company" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Supplier Company</label>
+                </div>
+
+
             </div>
 
 
@@ -192,9 +203,20 @@
 
 
 <script>
-    $(document).ready(function() {
-        $("#add_assets_category").change(function() {
-            var selectedCategory = $(this).val(); // Kunin ang napiling category ID
+
+$(document).ready(function () {
+
+
+
+
+
+
+
+
+
+
+    $("#add_assets_category").change(function () {
+        var selectedCategory = $(this).val(); // Kunin ang napiling category ID
 
             $("#add_assets_subcategory option").each(function() {
                 var subcategoryCategoryId = $(this).data("category_id"); // Kunin ang category_id ng subcategory

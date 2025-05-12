@@ -149,37 +149,37 @@
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const assetCodeInput = document.getElementById('add_assets_code');
-    const assetTypeSelect = document.getElementById('add_assets_description');
+    document.addEventListener('DOMContentLoaded', function() {
+        const assetCodeInput = document.getElementById('add_assets_code');
+        const assetTypeSelect = document.getElementById('add_assets_description');
 
-    let nextId = 1;
+        let nextId = 1;
 
-    // Fetch the next ID from the server
-    fetch('manager_assets_query.php')
-        .then(response => response.json())
-        .then(data => {
-            nextId = data.next_id || 1;
-            updateAssetCode(); // Generate initial code
-        })
-        .catch(error => console.error('Error fetching next ID:', error));
+        // Fetch the next ID from the server
+        fetch('manager_assets_query.php')
+            .then(response => response.json())
+            .then(data => {
+                nextId = data.next_id || 1;
+                updateAssetCode(); // Generate initial code
+            })
+            .catch(error => console.error('Error fetching next ID:', error));
 
-    function updateAssetCode() {
-        const selectedType = assetTypeSelect.value;
-        let prefix = '';
+        function updateAssetCode() {
+            const selectedType = assetTypeSelect.value;
+            let prefix = '';
 
-        if (selectedType === 'Assets') {
-            prefix = 'AST';
-        } else if (selectedType === 'Office Supplies') {
-            prefix = 'OFF';
+            if (selectedType === 'Assets') {
+                prefix = 'AST';
+            } else if (selectedType === 'Office Supplies') {
+                prefix = 'OFF';
+            }
+
+            const paddedId = String(nextId).padStart(4, '0'); // e.g. 0001
+            assetCodeInput.value = prefix ? prefix + paddedId : '';
         }
 
-        const paddedId = String(nextId).padStart(4, '0'); // e.g. 0001
-        assetCodeInput.value = prefix ? prefix + paddedId : '';
-    }
-
-    assetTypeSelect.addEventListener('change', updateAssetCode);
-});
+        assetTypeSelect.addEventListener('change', updateAssetCode);
+    });
 </script>
 
 
@@ -189,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Assets</h3>
         <form id="addAssetFrm">
 
+
+            <input type="text" hidden value="0" name="is_item" />
             <!-- Spinner -->
             <div class="spinner" id="spinner" style="display:none;">
                 <div class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
@@ -224,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
 
-          
+
             <div class="mb-4">
                 <label for="add_assets_description" class="block text-sm font-medium text-gray-700">Type</label>
                 <select class="w-full p-2 border rounded-md" id="add_assets_description" name="assets_description" onchange="filterCategories()" required>
@@ -302,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="mb-4">
                 <label for="add_assets_subcategory" class="block text-sm font-medium text-gray-700">Subcategory</label>
-                <select onclick="show_p(this.value);" name="assets_subcategory" id="add_assets_subcategory" class="w-full p-2 border rounded-md" required>
+                <select name="assets_subcategory" id="add_assets_subcategory" class="w-full p-2 border rounded-md" required>
                     <option value="">Select Subcategory</option>
                     <?php
                     $fetch_all_subcategory = $db->fetch_all_subcategory();
@@ -328,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <!--  -->
             <!--  -->
             <!--  -->
-            <div hidden class="mb-4">
+            <div class="mb-4">
                 <label for="size">Size</label>
                 <select name="size" id="size" class="w-full p-2 border rounded-md">
                     <option value="">Select Size if any</option>
@@ -339,11 +341,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     <option value="Letter">Letter</option>
                     <option value="Legal">Legal</option>
                     <option value="Tabloid">Tabloid</option>
-                    <!-- Add more sizes as required -->
+
+                    <!-- Additional general sizes -->
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    <option value="Extra Large">Extra Large</option>
+
+                    <!-- Optional specialized formats -->
+                    <option value="Executive">Executive</option>
+                    <option value="Folio">Folio</option>
+                    <option value="Statement">Statement</option>
                 </select>
             </div>
 
-            <div hidden class="mb-4">
+
+            <div class="mb-4">
                 <label for="brand">Brand</label>
                 <select name="brand" id="brand" class="w-full p-2 border rounded-md">
                     <option value="">Select Brand if any</option>
@@ -355,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </select>
             </div>
 
-            <div hidden class="mb-4">
+            <div class="mb-4">
                 <label for="unit">Quantity (Unit)</label>
                 <select name="unit" id="unit" class="w-full p-2 border rounded-md">
                     <option value="">Select Unit if any</option>
@@ -367,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </select>
             </div>
 
-            <div hidden class="mb-4">
+            <div class="mb-4">
                 <label for="paper_type">Paper Type</label>
                 <select name="paper_type" id="paper_type" class="w-full p-2 border rounded-md">
                     <option value="">Select Paper Type if any</option>
@@ -380,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </select>
             </div>
 
-            <div hidden class="mb-4">
+            <div class="mb-4">
                 <label for="thickness">Thickness</label>
                 <select name="thickness" id="thickness" class="w-full p-2 border rounded-md">
                     <option value="">Select Thickness if any</option>

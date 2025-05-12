@@ -729,6 +729,7 @@ $("#addAssetFrm").submit(function (e) {
 
 
 
+
 $("#updateAssetFrm").submit(function (e) {
     e.preventDefault();
 
