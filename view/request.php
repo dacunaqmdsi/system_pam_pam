@@ -72,7 +72,10 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
     <span class="material-icons mr-2 text-base">add</span>
     Add Assets
 </button> -->
+  <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Head Finance") { ?>
     <a href="request_add">Add Item</a>
+
+    <? } ?>
     <!-- User Table Card -->
     <div class="max-w-9xl mx-auto grid grid-cols-12 gap-4">
         <?php if ($_SESSION['role'] == "Head Library" || $_SESSION['role'] == "Head Basic Education" || $_SESSION['role'] == "Head IACEPO & NSTP") { ?>
@@ -102,7 +105,7 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                 </div>
                 <div class="grid grid-cols-3 gap-4 overflow-y-auto max-h-[600px]" id="assetsContainer">
                     <?php
-                    $fetch_all_assets = $db->fetch_all_assets_procurment();
+                    $fetch_all_assets = $db->fetch_all_assets_procurment2();
                     if ($fetch_all_assets->num_rows > 0):
                         while ($assets = $fetch_all_assets->fetch_assoc()):
                     ?>
