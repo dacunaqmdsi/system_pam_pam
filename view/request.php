@@ -23,123 +23,9 @@
     </span>
     <input type="text" id="searchInput" placeholder="Search users..."
         class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
-
-
 </div>
-<button id="addAssetsButton" class="bg-red-500 text-white py-2 px-4 text-sm rounded-lg flex items-center hover:bg-red-600 transition duration-300 mb-4">
-    <span class="material-icons mr-2 text-base">add</span>
-    Add Assets
-</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<!-- User Table Card -->
-<div class="max-w-9xl mx-auto grid grid-cols-12 gap-4">
+<div class="max-w-7xl mx-auto grid grid-cols-12 gap-4">
     <?php if ($_SESSION['role'] == "Head Library" || $_SESSION['role'] == "Head Basic Education" || $_SESSION['role'] == "Head IACEPO & NSTP") { ?>
     <?php } else { ?>
         <div class="col-span-8 bg-white p-4 rounded-xl shadow-md">
@@ -150,22 +36,15 @@
                 $fetch_all_category = $db->fetch_all_category();
                 if ($fetch_all_category->num_rows > 0):
                     while ($category = $fetch_all_category->fetch_assoc()):
-                        $category_name = $category['category_name'];
-                        if ($category_name == "Furniture") {
-                            $category_name .= " (Assets)";
-                        } else if ($category_name == "Appliances") {
-                            $category_name .= " (Assets)";
-                        } else {
-                            $category_name .= " (Off. Supplies)";
-                        }
                 ?>
-                        <button class="px-4 py-2 bg-gray-200 rounded category-filter" data-category_id='<?= $category['id'] ?>'><?= $category_name ?></button>
+                        <button class="px-4 py-2 bg-gray-200 rounded category-filter" data-category_id='<?= $category['id'] ?>'><?= $category['category_name'] ?></button>
                     <?php endwhile; ?>
                 <?php else: ?>
                     <p class="p-2 text-center">No record found.</p>
                 <?php endif; ?>
             </div>
             <div class="grid grid-cols-3 gap-4 overflow-y-auto max-h-[600px]" id="assetsContainer">
+
                 <?php
                 $fetch_all_assets = $db->fetch_all_assets_procurment();
                 if ($fetch_all_assets->num_rows > 0):
@@ -173,6 +52,9 @@
                 ?>
                         <div class="border p-4 rounded-xl shadow-md asset-item" data-category_id='<?= $assets['category_id'] ?>'>
                             <?php if (!empty($assets['image'])): ?>
+                                <!-- <img src="../uploads/images/<?php echo htmlspecialchars($assets['image']); ?>"
+                                alt="Profile Picture"
+                                class="rounded-md mb-2 w-full h-40 object-cover"> -->
                                 <div class="cursor-pointer togglerViewCart"
                                     data-asset_id='<?= $assets['id'] ?>'
                                     data-name='<?= ucfirst($assets['name']) ?>'
@@ -182,15 +64,17 @@
                                         class="rounded-md mb-2 w-full h-40 object-cover">
                                 </div>
                             <?php else: ?>
-                                <!-- <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i> -->
+                                <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i>
                             <?php endif; ?>
                             <h3 class="font-bold"><?php echo htmlspecialchars(ucfirst($assets['name'])); ?></h3>
+                            <!-- <p class="text-gray-600">₱<?php echo htmlspecialchars(number_format($assets['price'], 2)); ?></p> -->
                             <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart"
                                 data-asset_id='<?= $assets['id'] ?>'
                                 data-name='<?= ucfirst($assets['name']) ?>'
                                 data-variety='<?= $assets['variety'] ?>'>
                                 <span class="material-icons align-middle mr-1">add</span>
                             </button>
+
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
@@ -204,11 +88,12 @@
                 <!-- Cart items will be injected here -->
             </div>
             <p hidden class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p>
+            <!-- id="btnSendRequest" -->
             <button class="mt-4 w-full bg-green-500 text-white py-2 rounded " id="confirmRequest">Send Request</button>
         </div>
     <?php } ?>
+    <!-- Cart Section -->
 </div>
-
 
 <script>
     $(document).ready(function() {
@@ -244,327 +129,6 @@
     </div>
 </div>
 <!-- Modal -->
-
-
-
-
-
-
-
-<script>
-    // function filterCategories() {
-    //     var selectedType = document.getElementById('add_assets_description').value;
-
-    //     $("#add_assets_category option").each(function() {
-    //         var categoryType = $(this).data("type");
-
-    //         if (!categoryType || categoryType == selectedType) {
-    //             $(this).show();
-    //         } else {
-    //             $(this).hide();
-    //         }
-    //     });
-
-    //     $("#add_assets_category").val(""); // Reset category select
-    // }
-    // $(document).ready(function() {
-
-    //     $("#add_assets_category").change(function() {
-    //         var selectedCategory = $(this).val();
-
-    //         $("#add_assets_subcategory option").each(function() {
-    //             var subcategoryCategoryId = $(this).data("category_id");
-
-    //             if (!subcategoryCategoryId || subcategoryCategoryId == selectedCategory) {
-    //                 $(this).show();
-    //             } else {
-    //                 $(this).hide();
-    //             }
-    //         });
-
-    //         $("#add_assets_subcategory").val("");
-    //     });
-    // });
-
-
-    $(document).ready(function() {
-        $("#searchInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#userTable tbody tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            });
-        });
-    });
-</script>
-
-
-<!-- Modal for Adding Promo -->
-<div id="addAssetsModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center" style="display:none;">
-    <div class="bg-white rounded-lg shadow-lg w-[40rem] max-h-[80vh] overflow-y-auto p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Assets</h3>
-        <form id="addAssetFrm">
-
-            <!-- Spinner -->
-            <div class="spinner" id="spinner" style="display:none;">
-                <div class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
-                    <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                </div>
-            </div>
-
-
-
-            <div class="mb-4">
-                <label for="add_assets_img" class="block text-sm font-medium text-gray-700">Assets Image</label>
-                <input type="file" id="add_assets_img" name="assets_img" class="w-full p-2 border rounded-md">
-            </div>
-
-            <?php
-            $randomNumber = rand(1, 999);
-            // $assetId = 'AST' . str_pad($randomNumber, 5, '0', STR_PAD_LEFT);
-            ?>
-            <div class="mb-4">
-                <label for="add_assets_code" class="block text-sm font-medium text-gray-700">Asset ID</label>
-                <input type="text" id="add_assets_code" name="assets_code" value="" class="w-full p-2 border rounded-md bg-gray-100" readonly required>
-            </div>
-
-
-            <div class="mb-4">
-                <label for="add_assets_name" class="block text-sm font-medium text-gray-700">Name</label>
-                <input type="text" id="add_assets_name" name="assets_name" class="w-full p-2 border rounded-md" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="add_assets_name" class="block text-sm font-medium text-gray-700">QTY</label>
-                <input type="number" id="qty" name="qty" class="w-full p-2 border rounded-md" required>
-            </div>
-
-
-
-            <div class="mb-4">
-                <label for="add_assets_description" class="block text-sm font-medium text-gray-700">Type</label>
-                <select class="w-full p-2 border rounded-md" id="add_assets_description" name="assets_description" onchange="filterCategories()" required>
-                    <option value="">Select Type</option>
-                    <option value="Assets">Assets</option>
-                    <option value="Office Supplies">Office Supplies</option>
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="add_assets_price" class="block text-sm font-medium text-gray-700">Price</label>
-                <input type="text" id="add_assets_price" name="assets_price" class="w-full p-2 border rounded-md">
-            </div>
-
-
-            <div class="mb-4">
-                <label for="add_assets_Office" class="block text-sm font-medium text-gray-700">Office</label>
-                <select name="assets_Office" id="add_assets_Office" class="w-full p-2 border rounded-md" required>
-                    <option value="">Select Office</option>
-                    <?php
-                    $fetch_all_subcategory = $db->fetch_all_office();
-                    if ($fetch_all_subcategory->num_rows > 0):
-                        while ($subcategory = $fetch_all_subcategory->fetch_assoc()):
-                    ?>
-
-                            <option value="<?= $subcategory['id'] ?>"><?= $subcategory['office_name'] ?></option>
-
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="9" class="p-2 text-center">No record found.</td>
-                        </tr>
-                    <?php endif; ?>
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="add_assets_category" class="block text-sm font-medium text-gray-700">Category</label>
-                <select name="assets_category" id="add_assets_category" class="w-full p-2 border rounded-md" required>
-                    <option value="">Select Category</option>
-                    <?php
-                    $fetch_all_category = $db->fetch_all_category();
-                    if ($fetch_all_category->num_rows > 0):
-                        while ($category = $fetch_all_category->fetch_assoc()):
-                    ?>
-                            <option value="<?= $category['id'] ?>" data-type="<?= $category['type'] ?>">
-                                <?= $category['category_name'] ?>
-                            </option>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <option disabled>No record found.</option>
-                    <?php endif; ?>
-                </select>
-
-            </div>
-
-            <script>
-                function show_p(id) {
-                    const paperFields = [
-                        document.getElementById("size").parentElement,
-                        document.getElementById("brand").parentElement,
-                        document.getElementById("unit").parentElement,
-                        document.getElementById("paper_type").parentElement,
-                        document.getElementById("thickness").parentElement
-                    ];
-
-                    if (id == 36) {
-                        paperFields.forEach(field => field.hidden = false);
-                    } else {
-                        paperFields.forEach(field => field.hidden = true);
-                    }
-                }
-            </script>
-
-
-
-            <div class="mb-4">
-                <label for="add_assets_subcategory" class="block text-sm font-medium text-gray-700">Subcategory</label>
-               <select onclick="show_p(this.value);" name="assets_subcategory" id="add_assets_subcategory" class="w-full p-2 border rounded-md" required>
-                    <option value="">Select Subcategory</option>
-                    <?php
-                    $fetch_all_subcategory = $db->fetch_all_subcategory();
-                    if ($fetch_all_subcategory->num_rows > 0):
-                        while ($subcategory = $fetch_all_subcategory->fetch_assoc()):
-                    ?>
-
-                            <option data-category_id="<?= $subcategory['category_id'] ?>" value="<?= $subcategory['id'] ?>"><?= $subcategory['subcategory_name'] ?></option>
-
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="9" class="p-2 text-center">No record found.</td>
-                        </tr>
-                    <?php endif; ?>
-                </select>
-            </div>
-
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <div hidden class="mb-4">
-                <label for="size">Size</label>
-                <select name="size" id="size" class="w-full p-2 border rounded-md">
-                    <option value="">Select Size if any</option>
-                    <option value="Short">Short</option>
-                    <option value="Long">Long</option>
-                    <option value="A4">A4</option>
-                    <option value="A3">A3</option>
-                    <option value="Letter">Letter</option>
-                    <option value="Legal">Legal</option>
-                    <option value="Tabloid">Tabloid</option>
-                    <!-- Add more sizes as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="brand">Brand</label>
-                <select name="brand" id="brand" class="w-full p-2 border rounded-md">
-                    <option value="">Select Brand if any</option>
-                    <option value="Hardcopy">Hardcopy</option>
-                    <option value="Brand1">Brand1</option>
-                    <option value="Brand2">Brand2</option>
-                    <option value="Brand3">Brand3</option>
-                    <!-- Add more brands as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="unit">Quantity (Unit)</label>
-                <select name="unit" id="unit" class="w-full p-2 border rounded-md">
-                    <option value="">Select Unit if any</option>
-                    <option value="PC">Piece (PC)</option>
-                    <option value="Ream">Ream</option>
-                    <option value="Box">Box</option>
-                    <option value="Pack">Pack</option>
-                    <!-- Add more units as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="paper_type">Paper Type</label>
-                <select name="paper_type" id="paper_type" class="w-full p-2 border rounded-md">
-                    <option value="">Select Paper Type if any</option>
-                    <option value="Copier">Copier</option>
-                    <option value="Multipurpose">Multipurpose</option>
-                    <option value="Digital">Digital</option>
-                    <option value="Glossy">Glossy</option>
-                    <option value="Matte">Matte</option>
-                    <!-- Add more paper types as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="thickness">Thickness</label>
-                <select name="thickness" id="thickness" class="w-full p-2 border rounded-md">
-                    <option value="">Select Thickness if any</option>
-                    <option value="70gsm">70gsm</option>
-                    <option value="80gsm">80gsm</option>
-                    <option value="90gsm">90gsm</option>
-                    <option value="100gsm">100gsm</option>
-                    <option value="120gsm">120gsm</option>
-                    <!-- Add more thickness options as required -->
-                </select>
-            </div>
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-            <!--  -->
-
-
-            <div class="mb-4">
-                <label for="add_assets_condition" class="block text-sm font-medium text-gray-700">Condition</label>
-                <select name="assets_condition" id="add_assets_condition" class="w-full p-2 border rounded-md" required>
-                    <option value="New">New</option>
-                    <option value="Good">Good</option>
-                    <option value="Needs Repair">Needs Repair</option>
-                    <option value="Damaged">Damaged</option>
-                </select>
-            </div>
-
-
-            <div class="mb-4">
-                <label for="add_assets_status" class="block text-sm font-medium text-gray-700">Status</label>
-                <select name="assets_status" id="add_assets_status" class="w-full p-2 border rounded-md" required>
-                    <option value="Available">Available</option>
-                    <option value="Assigned">Assigned</option>
-                    <option value="Under Maintenance">Under Maintenance</option>
-                    <option value="Disposed">Disposed</option>
-                </select>
-            </div>
-
-
-
-
-            <div class="mb-4">
-                <label for="assets_variety_name" class="block text-sm font-medium text-gray-700">Specification</label>
-                <input type="text" id="assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md">
-            </div>
-
-            <div class="mb-4">
-                <label for="assets_variety_value" class="block text-sm font-medium text-gray-700">More Specification</label>
-                <div id="variety-values-container">
-                    <input type="text" name="assets_variety_value[]" class="w-full p-2 mb-2 border rounded-md">
-                </div>
-                <button type="button" class="add-variety-value mt-2 text-blue-500">Add Another Specification</button>
-            </div>
-
-
-
-
-            <div class="flex justify-end gap-2">
-                <button type="button" class="addUserModalClose bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded-md">Cancel</button>
-                <button id="btnAddAssets" type="submit" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md">Add new</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
 <div id="cartModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center" style="display:none;">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <form id="frmAddTocart">
@@ -856,8 +420,8 @@
             var selectedSubcategoryId = $(this).find("option:selected").data("subcategory_id");
 
             // Set the category and subcategory based on selected asset
-            // $("#add_category_item").val(selectedCategoryId).prop("disabled", true);
-            // $("#add_assets_subcategory").val(selectedSubcategoryId).prop("disabled", true);
+            $("#add_category_item").val(selectedCategoryId).prop("disabled", true);
+            $("#add_assets_subcategory").val(selectedSubcategoryId).prop("disabled", true);
 
             // Show matching subcategories when asset is selected
             $("#add_assets_subcategory option").each(function() {
@@ -869,7 +433,7 @@
             });
         });
         // Prevent manual change to category and subcategory
-        // $("#add_category_item, #add_assets_subcategory").prop("disabled", true);
+        $("#add_category_item, #add_assets_subcategory").prop("disabled", true);
         // Trigger category change to filter subcategories dynamically
         $("#add_category_item").change(function() {
             var selectedCategoryId = $(this).val();
@@ -986,39 +550,6 @@
         removeButton.on('click', function() {
             inputWrapper.remove(); // Remove the entire wrapper
         });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const assetCodeInput = document.getElementById('add_assets_code');
-        const assetTypeSelect = document.getElementById('add_assets_description');
-
-        let nextId = 1;
-
-        // Fetch the next ID from the server
-        fetch('manager_assets_query.php')
-            .then(response => response.json())
-            .then(data => {
-                nextId = data.next_id || 1;
-                updateAssetCode(); // Generate initial code
-            })
-            .catch(error => console.error('Error fetching next ID:', error));
-
-        function updateAssetCode() {
-            const selectedType = assetTypeSelect.value;
-            let prefix = '';
-
-            if (selectedType === 'Assets') {
-                prefix = 'AST';
-            } else if (selectedType === 'Office Supplies') {
-                prefix = 'OFF';
-            }
-
-            const paddedId = String(nextId).padStart(4, '0'); // e.g. 0001
-            assetCodeInput.value = prefix ? prefix + paddedId : '';
-        }
-
-        assetTypeSelect.addEventListener('change', updateAssetCode);
     });
 </script>
 <?php include "components/footer.php"; ?>
