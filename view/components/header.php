@@ -144,7 +144,7 @@ function isNavClosed($conn, $navId, $userType, $userId)
                     if ($On_Session[0]['role'] == "Administrator") {
                         echo 'System Admin';
                     } else if ($On_Session[0]['role'] == "Head Finance") {
-                        echo 'Procurement Officer';
+                        echo 'Proc. Officer';
                     }
                     ?>
                     <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>

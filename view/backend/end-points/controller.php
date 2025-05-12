@@ -542,13 +542,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         session_start();
         $received_by = intval($_SESSION['id']);
+        $recieved_number = $_POST['recieved_number'];
         $asset_name = $_POST['asset_name'];
         $asset_description = $_POST['asset_description'];
         $asset_supplier_name = $_POST['asset_supplier_name'];
         $asset_supplier_company = $_POST['asset_supplier_company'];
         $asset_qty = $_POST['asset_qty'];
 
-        $result = $db->recordLogs($received_by, $asset_name, $asset_description, $asset_supplier_name, $asset_supplier_company, $asset_qty);
+        $result = $db->recordLogs($received_by, $asset_name, $asset_description, $asset_supplier_name, $asset_supplier_company, $asset_qty, $recieved_number);
 
         if ($result == "success") {
             echo json_encode(["status" => 200, "message" => "Successfully Added"]);

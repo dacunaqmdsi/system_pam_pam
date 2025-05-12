@@ -1261,13 +1261,13 @@ class global_class extends db_connect
 
 
 
-    public function recordLogs($received_by, $asset_name, $asset_description, $asset_supplier_name, $asset_supplier_company, $asset_qty)
+    public function recordLogs($received_by, $asset_name, $asset_description, $asset_supplier_name, $asset_supplier_company, $asset_qty, $recieved_number)
     {
 
-        $sql = "INSERT INTO recieved_logs (recieved_supplier_name, recieved_supplier_company, recieved_assets_name, recieved_description, recieved_assets_qty, recieved_user_id) 
-                VALUES ( ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO recieved_logs (recieved_supplier_name, recieved_supplier_company, recieved_assets_name, recieved_description, recieved_assets_qty, recieved_user_id, recieved_number) 
+                VALUES ( ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssssii", $asset_supplier_name, $asset_supplier_company, $asset_name, $asset_description, $asset_qty, $received_by);
+        $stmt->bind_param("ssssiis", $asset_supplier_name, $asset_supplier_company, $asset_name, $asset_description, $asset_qty, $received_by, $recieved_number);
         if ($stmt->execute()) {
             $stmt->close();
             return 'success';
