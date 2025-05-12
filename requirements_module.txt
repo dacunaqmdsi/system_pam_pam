@@ -1,0 +1,70 @@
+Procurement & Assets Management System
+
+
+
+1. Login
+*Centralize Login for admin,registrar,finance,IACEPO
+    -admin (All module)
+    -registrar (Procurement )
+    -finance (Procurement )
+    -IACEPO (Procurement )
+
+
+
+
+
+2 Usermanagement 
+*Dito mag add ng mga account 
+*Dapat my restriction ang account na kung alin ang module lang na pedeng buksan (halimbawa sa registrar ang ginagawa nila e nag rerequest lang so dapat kapag nag login sya e dinya mabubukasan yung ibang module kundi yung procurement lang)
+* tapos dapat kapag nag upload ng photo sa usermanagement tapos kapag ginamit yung account na nacreate yun photo ang lalabas sa profile
+*Archive account (halimbawa si user e aalis tapos my bagong papalit it mean gagawa uli ng bagong account para dun bago) ang function ng archive para masave yung mga details na ginawa nung aalis na user.
+*idadagdag ang employee ID
+
+3. Procurement 
+*Supply Request - form ay dapat ang full name, Employee Id , at User type ay automatic filled from usermanagement.
+*Sa category of item then click the any selected items example(writing tools) may dropdown
+    [category {category_id,category_name material{,,,} variety{,,,}}]
+    date 
+    supplier name 
+    supplier company
+    
+    actions status(approve, ongoing, delivered)
+
+
+*Process Oder - 
+*May dropdown na (viewing (blue) , Rejected(Red), Approved (Green) na papasok din sa database
+*Nandito ang database table ng supply request tapos may actions na tatlo .
+- eye icon don lalabas ang mga product details (na popup view) per order id
+- update icon doon lalabas ang form para mag change nang fill up or Kahit ano palitan sa form (na popup view). per order id
+- Printable icon na dapat nag auto generate nang print (na popup view) per order id
+*Searchable per all items in database
+*function atleast 10 order id per page
+
+
+
+4 Assets management 
+
+*Di nagana ang add Assets 
+*hindi pa polished ang design
+*yung view e dapat e naka modal din para pag pinindot e magpopop up nalang 
+*Edit dapat e naka modal din tas mag papop-up pag pinindot tas lalabas yung kailangang i edit
+*sa delete e dapat e function lang na kapag nagdelete e hindi na mag reredirect
+*sa Assets history e dapat lalabas don yung mga ginagawa sa assets
+
+crud = inventory
+
+
+5. System Maintenance
+    create category from procurement
+    update category from procurement
+    remove category from procurement
+    system name
+
+
+
+
+6. Report Generation 
+Printable
+    total request
+    total assets
+    total inventory
