@@ -27,11 +27,38 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
         xmlhttp.send();
     }
 
-    function save_price(r_item_id) {
-        var r_finance_price = document.getElementById('r_finance_price' + r_item_id).value;
-        ajax_fn('procurement_receipt_save.php?r_item_id=' + r_item_id + '&r_finance_price=' + r_finance_price, 'tmp');
+    // function save_price(r_item_id) {
+    //     var select = document.getElementById('supplier_id');
+    //     var supplier_id = select.value;
+    //     var selectedOption = select.options[select.selectedIndex];
+    //     var price = selectedOption.getAttribute('data-price');
 
+    //     // Optional: Debug
+    //     //alert("Selected supplier ID: " + supplier_id + ", Price: " + price);
+
+    //     ajax_fn('procurement_receipt_save.php?r_item_id=' + r_item_id + '&supplier=' + supplier_id + '&price=' + price, 'tmp');
+    // }
+
+    function save_price(r_item_id) {
+        const select = document.getElementById('supplier_id');
+        const supplier_id = select.value;
+        const selectedOption = select.options[select.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+
+        fetch(`procurement_receipt_save.php?r_item_id=${r_item_id}&supplier=${supplier_id}&price=${price}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alertify.success(data.message);
+                } else {
+                    alertify.error(data.message);
+                }
+            })
+            .catch(() => {
+                alertify.error("Something went wrong. Please try again.");
+            });
     }
+
 </script>
 <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg" id="printedArea">
     <!-- Header -->
@@ -57,7 +84,7 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                 <th class="border p-2">Request Quantity</th>
                 <!-- <th class="border p-2">Price</th>
                 <th class="border p-2">Total</th> -->
-                <th class="border p-2">Input Price</th>
+                <th class="border p-2">Select Item</th>
             </tr>
         </thead>
         <tbody>
@@ -91,16 +118,28 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                         <td class="border p-2 text-center"><?= $item['r_item_qty'] ?></td>
                         <!-- <td class="border p-2 text-center">₱<?= number_format($item['r_item_price'], 2) ?></td>
                         <td class="border p-2 text-center">₱<?= number_format($total_price, 2) ?></td> -->
-                        <td class="border p-2 text-center"><input type="number" value="<?= $item['r_finance_price'] ?>" placeholder="Price" class="bg-gray-200" id="r_finance_price<?= $item['r_item_id'] ?>" name="r_finance_price" />
+                        <!-- <td class="border p-2 text-center"><input type="number" value="<?= $item['r_finance_price'] ?>" placeholder="Price" class="bg-gray-200" id="r_finance_price<?= $item['r_item_id'] ?>" name="r_finance_price" /> -->
+                        <td class="border p-2 text-center">
+                            <select name="supplier_id" id="supplier_id" class="form-select">
+                                <option value="0">Select Supplier</option>
+                                <?php
+                                $q = $conn->prepare('SELECT id, supplier_name, item_name, price, qty FROM supplier');
+                                $q->execute();
+                                $result = $q->get_result();
 
+                                while ($rs = $result->fetch_assoc()) {
+                                    echo '<option value="' . $rs['id'] . '" data-price="' . htmlspecialchars($rs['price']) . '">' .
+                                            htmlspecialchars($rs['supplier_name']) . ' - ' .
+                                            htmlspecialchars($rs['item_name']) . ' (₱' . htmlspecialchars($rs['price']) . ') - Stock Available ' .
+                                            htmlspecialchars($rs['qty']) .
+                                        '</option>';
+                                }
+                                ?>
+                            </select>
 
                             <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator") { ?>
-
                                 <button onclick="save_price(<?= $item['r_item_id'] ?>);">Save</button>
-
                             <?php } ?>
-
-
                         </td>
                         <span id="tmp"></span>
                     </tr>

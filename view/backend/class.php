@@ -1536,4 +1536,38 @@ class global_class extends db_connect
 
         return $items;
     }
+
+
+    public function addSupplier($supplier_name, $item_name, $price, $qty)
+    {
+        $sql = "INSERT INTO supplier (supplier_name, item_name, price, qty) VALUES (?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+    
+        if (!$stmt) {
+            return 'Prepare failed: ' . $this->conn->error;
+        }
+    
+        $stmt->bind_param("ssdd", $supplier_name, $item_name, $price, $qty);
+    
+        if ($stmt->execute()) {
+            $stmt->close();
+            return 'success';
+        } else {
+            $error = 'Execute failed: ' . $stmt->error;
+            $stmt->close();
+            return $error;
+        }
+    }
+
+    public function fetch_all_supplier()
+    {
+        $query = $this->conn->prepare("SELECT * FROM `supplier`");
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
+    
 }
+

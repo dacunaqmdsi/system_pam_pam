@@ -245,6 +245,44 @@ $("#recordLogsFrm").submit(function (e) {
 });
 
 
+$("#supplierFrm").submit(function (e) {
+    e.preventDefault();
+    $('.spinner').show();
+    $('#btnSupplier').prop('disabled', true);
+
+    var formData = new FormData(this);
+    formData.append('requestType', 'addSupplier');
+
+    $.ajax({
+        type: "POST",
+        url: "backend/end-points/controller.php",
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+            $("#btnSupplier").prop("disabled", true).text("Processing...");
+        },
+        success: function (response) {
+            console.log(response);
+
+            if (response.status === 200) {
+                alertify.success(response.message);
+                setTimeout(function () { location.reload(); }, 1000);
+            } else {
+                $('.spinner').hide();
+                $('#btnSupplier').prop('disabled', false);
+                alertify.error(response.message);
+            }
+        },
+        complete: function () {
+            $("#btnSupplier").prop("disabled", false).text("Add Supplier");
+        }
+    });
+});
+
+
+
 
 
 

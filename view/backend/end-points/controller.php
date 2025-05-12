@@ -672,7 +672,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo json_encode(["status" => 400, "message" => $result]);
         }
-    } else {
+    }else if ($_POST['requestType'] == 'addSupplier') {
+
+
+        session_start();
+        //$received_by = intval($_SESSION['id']);
+        $supplier_name = $_POST['supplier_name'];
+        $item_name = $_POST['item_name'];
+        $price = $_POST['price'];
+        $qty = $_POST['qty'];
+
+        $result = $db->addSupplier($supplier_name, $item_name, $price, $qty);
+
+        if ($result == "success") {
+            echo json_encode(["status" => 200, "message" => "Successfully Added"]);
+        } else {
+            echo json_encode(["status" => 400, "message" => $result]);
+        }
+    }
+    
+    else {
 
         echo "<pre>";
         print_r($_POST);
