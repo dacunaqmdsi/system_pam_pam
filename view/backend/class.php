@@ -175,6 +175,71 @@ class global_class extends db_connect
         }
     }
 
+    public function AddAssets2(
+        $assets_imageName,
+        $assets_code,
+        $assets_name,
+        $assets_Office,
+        $assets_category,
+        $assets_subcategory,
+        $assets_condition,
+        $assets_status,
+        $assets_description,
+        $assets_price,
+        $variety_json,
+        $size,
+        $brand,
+        $unit,
+        $paper_type,
+        $thickness,
+        $qty
+    ) {
+
+
+        $checkAssetCode = $this->conn->prepare("SELECT asset_code FROM assets_item WHERE asset_code = ?");
+        $checkAssetCode->bind_param("s", $assets_code);
+        $checkAssetCode->execute();
+        $checkAssetCodeResult = $checkAssetCode->get_result();
+
+        if ($checkAssetCodeResult->num_rows > 0) {
+            return "Asset code already exists. Please use a different code.";
+        }
+
+        $query = $this->conn->prepare(
+            "INSERT INTO `assets_item` (`asset_code`, `name`, `category_id`, `subcategory_id`, `office_id`, 
+                    `price`, `condition_status`, `status`, `image`, `description`, `variety`,
+                    `size`, `brand`, `unit`, `paper_type`, `thickness`, `qty`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+
+        $query->bind_param(
+            "sssssssssssssssss",
+            $assets_code,
+            $assets_name,
+            $assets_category,
+            $assets_subcategory,
+            $assets_Office,
+            $assets_price,
+            $assets_condition,
+            $assets_status,
+            $assets_imageName,
+            $assets_description,
+            $variety_json,
+            $size,
+            $brand,
+            $unit,
+            $paper_type,
+            $thickness,
+            $qty
+        );
+        if ($query->execute()) {
+            return 'success';
+        } else {
+            return 'Error: ' . $query->error;
+        }
+    }
+
+
 
 
 

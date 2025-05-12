@@ -189,6 +189,8 @@
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Assets</h3>
         <form id="addAssetFrm">
 
+
+            <input type="text" hidden value="0" name="is_item" />
             <!-- Spinner -->
             <div class="spinner" id="spinner" style="display:none;">
                 <div class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
@@ -302,7 +304,7 @@
 
             <div class="mb-4">
                 <label for="add_assets_subcategory" class="block text-sm font-medium text-gray-700">Subcategory</label>
-                <select onclick="show_p(this.value);" name="assets_subcategory" id="add_assets_subcategory" class="w-full p-2 border rounded-md" required>
+                <select name="assets_subcategory" id="add_assets_subcategory" class="w-full p-2 border rounded-md" required>
                     <option value="">Select Subcategory</option>
                     <?php
                     $fetch_all_subcategory = $db->fetch_all_subcategory();
