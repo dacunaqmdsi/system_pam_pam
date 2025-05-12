@@ -167,26 +167,10 @@
                 <h2 class="text-xl font-bold mb-4" id="asset_name">Shopping Cart</h2>
                 <div id="cartItems" class="mb-4">
 
-                    <input hidden type="text" id="add_id" name="add_id">
-
-                    <!-- <div class="relative mb-4" >
-                <input type="text" id="search_user_fullname" name="search_user_fullname" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
-                <label for="search_user_fullname" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Fullname</label>
-                <div id="employeeSuggestions" class="absolute left-0 bg-white border border-gray-300 rounded-md shadow-md w-full hidden mt-1 z-50"></div>
-            </div>
+                    <input type="text" id="add_id" name="add_id">
 
 
-            <div class="relative mb-4" >
-                <input readonly type="text" id="add_user_id" name="add_user_id" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
-                <label for="add_user_id" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Employee ID</label>
-            </div>
-
-            <div class="mb-4">
-                <label for="add_user_designation" class="block text-sm font-medium text-gray-700">Office Designation</label>
-                <input readonly type="text" id="add_user_designation" name="user_designation" class="w-full p-2 border rounded-md" required>
-            </div> -->
-
-                    <div class="relative mb-4" hidden>
+                    <div class="relative mb-4">
                         <input type="text" id="asset_id" name="asset_id" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                         <label for="asset_id" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Asset ID</label>
                     </div>

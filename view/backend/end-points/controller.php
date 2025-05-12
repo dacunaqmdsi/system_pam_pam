@@ -672,7 +672,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo json_encode(["status" => 400, "message" => $result]);
         }
-    }else if ($_POST['requestType'] == 'addSupplier') {
+    } else if ($_POST['requestType'] == 'addSupplier') {
 
 
         session_start();
@@ -689,9 +689,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo json_encode(["status" => 400, "message" => $result]);
         }
-    }
-    
-    else {
+    } else {
 
         echo "<pre>";
         print_r($_POST);

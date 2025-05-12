@@ -62,7 +62,7 @@
                     <th class="p-3">Supplier Company</th> -->
                     <th class="p-3">Quantity</th>
                     <th class="p-3">Recieved By</th>
-                    <th class="p-3">Actions</th>
+                    <!-- <th class="p-3">Actions</th> -->
                    
                     
                     
