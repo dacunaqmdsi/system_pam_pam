@@ -113,7 +113,7 @@ class global_class extends db_connect
 
     public function AddAssets(
         $assets_imageName,
-        $assets_code,
+        $assets_code, // used only as the base/prefix
         $assets_name,
         $assets_Office,
         $assets_category,
@@ -130,54 +130,74 @@ class global_class extends db_connect
         $thickness,
         $qty
     ) {
+        // Determine prefix from $assets_code (e.g., AST from AST0001)
+        $prefix = preg_replace('/[0-9]/', '', $assets_code);
 
+        // Get latest numeric ID part from DB to continue incrementing
+        $result = $this->conn->query("SELECT MAX(id) AS max_id FROM assets");
+        $row = $result->fetch_assoc();
+        $startId = isset($row['max_id']) ? (int)$row['max_id'] + 1 : 1;
 
-        $checkAssetCode = $this->conn->prepare("SELECT asset_code FROM assets WHERE asset_code = ?");
-        $checkAssetCode->bind_param("s", $assets_code);
-        $checkAssetCode->execute();
-        $checkAssetCodeResult = $checkAssetCode->get_result();
+        for ($i = 0; $i < $qty; $i++) {
+            $currentId = $startId + $i;
+            $generatedCode = $prefix . str_pad($currentId, 4, '0', STR_PAD_LEFT);
 
-        if ($checkAssetCodeResult->num_rows > 0) {
-            return "Asset code already exists. Please use a different code.";
-        }
+            // Double-check for existing code just to be safe
+            $checkAssetCode = $this->conn->prepare("SELECT asset_code FROM assets WHERE asset_code = ?");
+            $checkAssetCode->bind_param("s", $generatedCode);
+            $checkAssetCode->execute();
+            $checkAssetCodeResult = $checkAssetCode->get_result();
 
-        $query = $this->conn->prepare(
-            "INSERT INTO `assets` (`asset_code`, `name`, `category_id`, `subcategory_id`, `office_id`, 
-                    `price`, `condition_status`, `status`, `image`, `description`, `variety`,
-                    `size`, `brand`, `unit`, `paper_type`, `thickness`, `qty`) 
+            if ($checkAssetCodeResult->num_rows > 0) {
+                return "Asset code $generatedCode already exists. Please try again.";
+            }
+
+            // Insert the asset
+            $query = $this->conn->prepare(
+                "INSERT INTO `assets` (`asset_code`, `name`, `category_id`, `subcategory_id`, `office_id`, 
+                `price`, `condition_status`, `status`, `image`, `description`, `variety`,
+                `size`, `brand`, `unit`, `paper_type`, `thickness`, `qty`) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        );
+            );
 
-        $query->bind_param(
-            "sssssssssssssssss",
-            $assets_code,
-            $assets_name,
-            $assets_category,
-            $assets_subcategory,
-            $assets_Office,
-            $assets_price,
-            $assets_condition,
-            $assets_status,
-            $assets_imageName,
-            $assets_description,
-            $variety_json,
-            $size,
-            $brand,
-            $unit,
-            $paper_type,
-            $thickness,
-            $qty
-        );
-        if ($query->execute()) {
-            return 'success';
-        } else {
-            return 'Error: ' . $query->error;
+            // Each asset is inserted individually with qty = 1
+            $oneQty = 1;
+
+            $query->bind_param(
+                "sssssssssssssssss",
+                $generatedCode,
+                $assets_name,
+                $assets_category,
+                $assets_subcategory,
+                $assets_Office,
+                $assets_price,
+                $assets_condition,
+                $assets_status,
+                $assets_imageName,
+                $assets_description,
+                $variety_json,
+                $size,
+                $brand,
+                $unit,
+                $paper_type,
+                $thickness,
+                $oneQty
+            );
+
+            if (!$query->execute()) {
+                return 'Error on asset ' . $generatedCode . ': ' . $query->error;
+            }
+
+            $query->close();
         }
+
+        return 'success';
     }
+
 
     public function AddAssets2(
         $assets_imageName,
-        $assets_code,
+        $assets_code, // used only as the base/prefix
         $assets_name,
         $assets_Office,
         $assets_category,
@@ -194,51 +214,67 @@ class global_class extends db_connect
         $thickness,
         $qty
     ) {
+        // Determine prefix from $assets_code (e.g., AST from AST0001)
+        $prefix = preg_replace('/[0-9]/', '', $assets_code);
 
+        // Get latest ID to generate next codes
+        $result = $this->conn->query("SELECT MAX(id) AS max_id FROM assets_item");
+        $row = $result->fetch_assoc();
+        $startId = isset($row['max_id']) ? (int)$row['max_id'] + 1 : 1;
 
-        $checkAssetCode = $this->conn->prepare("SELECT asset_code FROM assets_item WHERE asset_code = ?");
-        $checkAssetCode->bind_param("s", $assets_code);
-        $checkAssetCode->execute();
-        $checkAssetCodeResult = $checkAssetCode->get_result();
+        for ($i = 0; $i < $qty; $i++) {
+            $currentId = $startId + $i;
+            $generatedCode = $prefix . str_pad($currentId, 4, '0', STR_PAD_LEFT);
 
-        if ($checkAssetCodeResult->num_rows > 0) {
-            return "Asset code already exists. Please use a different code.";
-        }
+            // Double-check for uniqueness just in case
+            $checkAssetCode = $this->conn->prepare("SELECT asset_code FROM assets_item WHERE asset_code = ?");
+            $checkAssetCode->bind_param("s", $generatedCode);
+            $checkAssetCode->execute();
+            $checkAssetCodeResult = $checkAssetCode->get_result();
 
-        $query = $this->conn->prepare(
-            "INSERT INTO `assets_item` (`asset_code`, `name`, `category_id`, `subcategory_id`, `office_id`, 
-                    `price`, `condition_status`, `status`, `image`, `description`, `variety`,
-                    `size`, `brand`, `unit`, `paper_type`, `thickness`, `qty`) 
+            if ($checkAssetCodeResult->num_rows > 0) {
+                return "Asset code $generatedCode already exists. Please try again.";
+            }
+
+            $query = $this->conn->prepare(
+                "INSERT INTO `assets_item` (`asset_code`, `name`, `category_id`, `subcategory_id`, `office_id`, 
+                `price`, `condition_status`, `status`, `image`, `description`, `variety`,
+                `size`, `brand`, `unit`, `paper_type`, `thickness`, `qty`) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        );
+            );
 
-        $query->bind_param(
-            "sssssssssssssssss",
-            $assets_code,
-            $assets_name,
-            $assets_category,
-            $assets_subcategory,
-            $assets_Office,
-            $assets_price,
-            $assets_condition,
-            $assets_status,
-            $assets_imageName,
-            $assets_description,
-            $variety_json,
-            $size,
-            $brand,
-            $unit,
-            $paper_type,
-            $thickness,
-            $qty
-        );
-        if ($query->execute()) {
-            return 'success';
-        } else {
-            return 'Error: ' . $query->error;
+            $oneQty = 1;
+
+            $query->bind_param(
+                "sssssssssssssssss",
+                $generatedCode,
+                $assets_name,
+                $assets_category,
+                $assets_subcategory,
+                $assets_Office,
+                $assets_price,
+                $assets_condition,
+                $assets_status,
+                $assets_imageName,
+                $assets_description,
+                $variety_json,
+                $size,
+                $brand,
+                $unit,
+                $paper_type,
+                $thickness,
+                $oneQty
+            );
+
+            if (!$query->execute()) {
+                return 'Error on asset ' . $generatedCode . ': ' . $query->error;
+            }
+
+            $query->close();
         }
-    }
 
+        return 'success';
+    }
 
 
 
