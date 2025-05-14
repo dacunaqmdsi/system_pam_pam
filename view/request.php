@@ -8,27 +8,32 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
         $userImage = !empty($On_Session[0]['profile_picture']) ? $On_Session[0]['profile_picture'] : null;
         ?>
         <div class="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gray-200 text-gray-600">
-            <?php if ($userImage): ?>
+            <?php if ($userImage) : ?>
                 <img src="../uploads/images/<?php echo $userImage; ?>" alt="User Avatar" class="w-full h-full object-cover">
-            <?php else: ?>
+            <?php else : ?>
                 <span class="material-icons text-3xl">account_circle</span>
             <?php endif; ?>
         </div>
         <div>
             <?php
-            if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") {
-
-                echo '';
-            }
-            // here abay
+            $notificationCount = $db->GetValue("SELECT COUNT(request_id) FROM request WHERE is_viewed = 0 AND request_user_id = " . intval($_SESSION['id']));
             ?>
+            <a href="approved_request.php" class="relative inline-block cursor-pointer" title="Notifications">
+                <span class="material-icons text-gray-600 text-2xl">notifications</span>
+                <?php if ($notificationCount > 0) : ?>
+                    <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full px-1">
+                        <?php echo $notificationCount; ?>
+                    </span>
+                <?php endif; ?>
+            </a>
 
 
-            icon
+
+            <!-- icon
             darren
             list of na approved..
 
-            descending order.
+            descending order. -->
         </div>
         <span class="text-gray-700 font-medium">
             <?php echo ucfirst($On_Session[0]['fullname']); ?>
@@ -39,8 +44,7 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
     <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
         <i class="material-icons text-lg">search</i>
     </span>
-    <input type="text" id="searchInput" placeholder="Search users..."
-        class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
+    <input type="text" id="searchInput" placeholder="Search users..." class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
 </div>
 <script>
     function ajax_fn(url, elementId) {
@@ -72,8 +76,8 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
     <span class="material-icons mr-2 text-base">add</span>
     Add Assets
 </button> -->
-  <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Head Finance") { ?>
-    <a href="request_add">Add Item</a>
+    <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Head Finance") { ?>
+        <a href="request_add">Add Item</a>
 
     <? } ?>
     <!-- User Table Card -->
@@ -86,8 +90,8 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                     <button class="px-4 py-2 bg-blue-500 text-white rounded" id="filterAll">All</button>
                     <?php
                     $fetch_all_category = $db->fetch_all_category();
-                    if ($fetch_all_category->num_rows > 0):
-                        while ($category = $fetch_all_category->fetch_assoc()):
+                    if ($fetch_all_category->num_rows > 0) :
+                        while ($category = $fetch_all_category->fetch_assoc()) :
                             $category_name = $category['category_name'];
                             if ($category_name == "Furniture") {
                                 $category_name .= " (Assets)";
@@ -99,18 +103,18 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                     ?>
                             <button class="px-4 py-2 bg-gray-200 rounded category-filter" data-category_id='<?= $category['id'] ?>'><?= $category_name ?></button>
                         <?php endwhile; ?>
-                    <?php else: ?>
+                    <?php else : ?>
                         <p class="p-2 text-center">No record found.</p>
                     <?php endif; ?>
                 </div>
                 <div class="grid grid-cols-3 gap-4 overflow-y-auto max-h-[600px]" id="assetsContainer">
                     <?php
                     $fetch_all_assets = $db->fetch_all_assets_procurment2();
-                    if ($fetch_all_assets->num_rows > 0):
-                        while ($assets = $fetch_all_assets->fetch_assoc()):
+                    if ($fetch_all_assets->num_rows > 0) :
+                        while ($assets = $fetch_all_assets->fetch_assoc()) :
                     ?>
                             <div class="border p-4 rounded-xl shadow-md asset-item" data-category_id='<?= $assets['category_id'] ?>'>
-                                <?php if (!empty($assets['image'])): ?>
+                                <?php if (!empty($assets['image'])) : ?>
                                     <!-- <div class="cursor-pointer togglerViewCart"
                                         data-asset_id='<?= $assets['id'] ?>'
                                         data-name='<?= ucfirst($assets['name']) ?>'
@@ -119,19 +123,16 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                                             alt="Profile Picture"
                                             class="rounded-md mb-2 w-full h-40 object-cover">
                                     </div> -->
-                                <?php else: ?>
+                                <?php else : ?>
                                     <!-- <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i> -->
                                 <?php endif; ?>
                                 <h3 class="font-bold"><?php echo htmlspecialchars(ucfirst($assets['name'])); ?></h3>
-                                <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart"
-                                    data-asset_id='<?= $assets['id'] ?>'
-                                    data-name='<?= ucfirst($assets['name']) ?>'
-                                    data-variety='<?= $assets['variety'] ?>'>
+                                <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart" data-asset_id='<?= $assets['id'] ?>' data-name='<?= ucfirst($assets['name']) ?>' data-variety='<?= $assets['variety'] ?>'>
                                     <span class="material-icons align-middle mr-1">add</span>
                                 </button>
                             </div>
                         <?php endwhile; ?>
-                    <?php else: ?>
+                    <?php else : ?>
                         <p class="p-2 text-center">No record found.</p>
                     <?php endif; ?>
                 </div>

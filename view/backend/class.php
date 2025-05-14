@@ -1720,4 +1720,37 @@ class global_class extends db_connect
             return $result;
         }
     }
+
+    public function fetch_approved_request(){
+        $query = $this->conn->prepare('
+        SELECT * FROM request 
+        WHERE status = 1 
+          AND request_status = "Approve" 
+          AND request_user_id = ? 
+        ORDER BY request_date DESC
+    ');
+
+        if ($query->execute([$_SESSION['id']])) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
+
+    public function GetValue($query) {
+        error_reporting(0);
+        $result = $this->conn->query($query);
+        if ($result && $row = $result->fetch_array()) {
+            return $row[0];
+        }
+        return null;
+    }
+
+    public function read_notif() {
+        $query = $this->conn->prepare('UPDATE request SET is_viewed = 1 WHERE request_user_id = ?');
+        $query->bind_param("i", $_SESSION['id']);
+        return $query->execute();
+    }
+    
+
+    
 }
