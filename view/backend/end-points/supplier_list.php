@@ -8,7 +8,7 @@ if ($fetch_all_receive_logs->num_rows > 0) :
             <td class="p-2"><?php echo htmlspecialchars($logs['supplier_name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($logs['item_name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($logs['price']); ?></td>
-            <td class="p-2"><?php echo htmlspecialchars($logs['qty']); ?></td>
+            <!-- <td class="p-2"><?php echo htmlspecialchars($logs['qty']); ?></td> -->
         </tr>
     <?php endwhile; ?>
 <?php else : ?>

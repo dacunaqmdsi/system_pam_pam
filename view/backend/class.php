@@ -281,53 +281,59 @@ class global_class extends db_connect
 
 
 
-    public function UpdateAssets($assets_id, $assets_imageName, $assets_code, $assets_name, $assets_Office, $assets_category, $assets_subcategory, $assets_condition, $assets_status, $assets_description, $assets_price, $variety_json, $update_qty)
-    {
-        // Start base query
-        $sql = "UPDATE `assets` 
-                SET `asset_code` = ?, `name` = ?, `category_id` = ?, `subcategory_id` = ?, `office_id` = ?, 
-                    `price` = ?, `condition_status` = ?, `status` = ?, `description` = ?, `variety` = ?, `update_qty` = ?";
+    public function UpdateAssets(
+        $assets_id,
+        $assets_code,
+        $assets_name_edit,
+        $assets_description,
+        $assets_Office_edit,
+        $assets_category_edit,
+        $assets_subcategory_edit,
+        $assets_condition_edit,
+        $assets_status_edit
+    ) {
+        $conn = mysqli_connect("localhost", "root", "", "pam");
+        if (!$conn) {
+            return "Database connection failed: " . mysqli_connect_error();
+        }
 
-        // Check if image is not empty, include in the query
-        $params = [
+        $stmt = $conn->prepare("UPDATE assets SET 
+        asset_code = ?, 
+        name = ?, 
+        description = ?, 
+        office_id = ?, 
+        category_id = ?, 
+        subcategory_id = ?, 
+        condition_status = ?, 
+        status = ? 
+        WHERE id = ?");
+
+        if (!$stmt) {
+            $conn->close();
+            return "Prepare failed: " . $conn->error;
+        }
+
+        $stmt->bind_param(
+            "sssiiissi", // 9 parameters
             $assets_code,
-            $assets_name,
-            $assets_category,
-            $assets_subcategory,
-            $assets_Office,
-            $assets_price,
-            $assets_condition,
-            $assets_status,
+            $assets_name_edit,
             $assets_description,
-            $variety_json,
-            $update_qty
-        ];
+            $assets_Office_edit,
+            $assets_category_edit,
+            $assets_subcategory_edit,
+            $assets_condition_edit,
+            $assets_status_edit,
+            $assets_id
+        );
 
-        $types = "sssssssssss";
+        $result = $stmt->execute();
 
-        if (!empty($assets_imageName)) {
-            $sql .= ", `image` = ?";
-            $params[] = $assets_imageName;
-            $types .= "s";
-        }
+        $stmt->close();
+        $conn->close();
 
-        // Add WHERE clause
-        $sql .= " WHERE `id` = ?";
-        $params[] = $assets_id;
-        $types .= "i";
-
-        // Prepare the query
-        $query = $this->conn->prepare($sql);
-
-        // Bind parameters dynamically
-        $query->bind_param($types, ...$params);
-
-        if ($query->execute()) {
-            return 'success';
-        } else {
-            return 'Error: ' . $query->error;
-        }
+        return $result ? "success" : "Error updating asset: " . $stmt->error;
     }
+
 
 
     public function UpdateMaintenance($system_logoName, $system_name)
@@ -1313,10 +1319,10 @@ class global_class extends db_connect
     }
 
 
-    public function fetch_all_receive_logs()
+    public function fetch_all_receive_logs($session_id)
     {
         $query = $this->conn->prepare("SELECT * FROM `recieved_logs`
-        LEFT JOIN users ON users.id = recieved_logs.recieved_user_id
+        LEFT JOIN users ON users.id = recieved_logs.recieved_user_id WHERE users.id='$session_id'
         ");
 
         if ($query->execute()) {
@@ -1721,7 +1727,8 @@ class global_class extends db_connect
         }
     }
 
-    public function fetch_approved_request(){
+    public function fetch_approved_request()
+    {
         $query = $this->conn->prepare('
         SELECT * FROM request 
         WHERE status = 1 
@@ -1736,7 +1743,8 @@ class global_class extends db_connect
         }
     }
 
-    public function GetValue($query) {
+    public function GetValue($query)
+    {
         error_reporting(0);
         $result = $this->conn->query($query);
         if ($result && $row = $result->fetch_array()) {
@@ -1745,12 +1753,10 @@ class global_class extends db_connect
         return null;
     }
 
-    public function read_notif() {
+    public function read_notif()
+    {
         $query = $this->conn->prepare('UPDATE request SET is_viewed = 1 WHERE request_user_id = ?');
         $query->bind_param("i", $_SESSION['id']);
         return $query->execute();
     }
-    
-
-    
 }

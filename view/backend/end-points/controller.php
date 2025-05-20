@@ -301,81 +301,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     } else if ($_POST['requestType'] == 'UpdateAssets') {
 
-        $uploadDir = "../../../uploads/images/";
-
-        function generateUniqueFilename($file, $prefix)
-        {
-            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-            return $prefix . '_' . uniqid() . '.' . $ext;
-        }
-
-        function handleFileUpload($file, $uploadDir, $prefix)
-        {
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-            $maxFileSize = 10 * 1024 * 1024; // 10MB
-
-            if ($file['error'] !== UPLOAD_ERR_OK) {
-                return null;
-            }
-
-            // Ensure the temp file exists before checking MIME type
-            if (!file_exists($file['tmp_name'])) {
-                return null;
-            }
-
-            if (!in_array(mime_content_type($file['tmp_name']), $allowedTypes)) {
-                return null;
-            }
-
-            if ($file['size'] > $maxFileSize) {
-                return null;
-            }
-
-            $fileName = generateUniqueFilename($file, $prefix);
-            $destination = $uploadDir . $fileName;
-
-            if (move_uploaded_file($file['tmp_name'], $destination)) {
-                return $fileName;
-            }
-            return null;
-        }
-
-        $assets_image = $_FILES['assets_img'] ?? null;
-
-        // NEW FILE NAME with Prefix
-        $assets_imageName = $assets_image ? handleFileUpload($assets_image, $uploadDir, "Assets") : null;
-
         $assets_id = htmlspecialchars(trim($_POST['assets_id']));
         $assets_code = htmlspecialchars(trim($_POST['assets_code']));
-        $assets_name = htmlspecialchars(trim($_POST['assets_name']));
-        $update_qty = htmlspecialchars(trim($_POST['update_qty']));
-        $assets_Office = htmlspecialchars(trim($_POST['assets_Office']));
-        $assets_category = htmlspecialchars(trim($_POST['assets_category']));
-        $assets_subcategory = htmlspecialchars(trim($_POST['assets_subcategory']));
-        $assets_condition = htmlspecialchars(trim($_POST['assets_condition']));
-        $assets_status = htmlspecialchars(trim($_POST['assets_status']));
+        $assets_name_edit = htmlspecialchars(trim($_POST['assets_name_edit']));
         $assets_description = htmlspecialchars(trim($_POST['assets_description']));
-        $assets_price = htmlspecialchars(trim($_POST['assets_price']));
+        $assets_Office_edit = htmlspecialchars(trim($_POST['assets_Office_edit']));
+        $assets_category_edit = htmlspecialchars(trim($_POST['assets_category_edit']));
+        $assets_subcategory_edit = htmlspecialchars(trim($_POST['assets_subcategory_edit']));
+        $assets_condition_edit = htmlspecialchars(trim($_POST['assets_condition_edit']));
+        $assets_status_edit = htmlspecialchars(trim($_POST['assets_status_edit']));
 
-
-        $assets_variety_name = htmlspecialchars(trim($_POST['assets_variety_name'] ?? ''));
-        $assets_variety_values = isset($_POST['assets_variety_value']) ? $_POST['assets_variety_value'] : [];
-
-        if (!empty($assets_variety_name) && !empty($assets_variety_values)) {
-            $variety_json = json_encode([
-                'name' => $assets_variety_name,
-                'values' => $assets_variety_values
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
-            $variety_json = null;
-        }
-
-
-
-        $result = $db->UpdateAssets($assets_id, $assets_imageName, $assets_code, $assets_name, $assets_Office, $assets_category, $assets_subcategory, $assets_condition, $assets_status, $assets_description, $assets_price, $variety_json, $update_qty);
+        $result = $db->UpdateAssets(
+            $assets_id,
+            $assets_code,
+            $assets_name_edit,
+            $assets_description,
+            $assets_Office_edit,
+            $assets_category_edit,
+            $assets_subcategory_edit,
+            $assets_condition_edit,
+            $assets_status_edit
+        );
 
         if ($result == "success") {
-            echo json_encode(["status" => 200, "message" => "Successfully Added"]);
+            echo json_encode(["status" => 200, "message" => "Successfully Updated"]);
         } else {
             echo json_encode(["status" => 400, "message" => $result]);
         }
@@ -527,7 +476,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $paper_type = $item['paper_type'];
                         $thickness = $item['thickness'];
 
-                        
+
 
 
 

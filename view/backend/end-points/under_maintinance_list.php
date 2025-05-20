@@ -10,7 +10,7 @@ if ($fetch_all_user->num_rows > 0):
 <tr>
     <td class="p-2"><?php echo $count++ ?></td>
     
-    <td class="p-2">
+    <!-- <td class="p-2">
         <div class="flex items-center justify-center w-12 h-12">
             <?php if (!empty($user['image'])): ?>
                 <img src="../uploads/images/<?php echo htmlspecialchars($user['image']); ?>" 
@@ -20,7 +20,7 @@ if ($fetch_all_user->num_rows > 0):
                 <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i>
             <?php endif; ?>
         </div>
-    </td>
+    </td> -->
   
     <td class="p-2"><?php echo htmlspecialchars($user['asset_code']); ?></td>
     <td class="p-2"><?php echo htmlspecialchars($user['name']); ?></td>

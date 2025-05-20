@@ -56,7 +56,7 @@
                     <th class="p-3">Supplier Name</th>
                     <th class="p-3">Item Name</th>
                     <th class="p-3">Price</th>
-                    <th class="p-3">Quantity</th>
+                    <!-- <th class="p-3">Quantity</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -99,7 +99,7 @@
                 <label for="price" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Price</label>
             </div>
 
-            <div class="relative mb-4">
+            <div hidden class="relative mb-4">
                 <input type="number" id="qty" name="qty" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                 <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Quantity</label>
             </div>

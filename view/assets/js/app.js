@@ -311,13 +311,8 @@ $('.togglerUpdateAssets').click(function (e) {
     let condition_status = $(this).data('condition_status');
     let office_id = $(this).data('office_id');
     let status = $(this).data('status');
-    let variety = $(this).data('variety'); // This is the variety data, which might already be an object
 
-    console.log(id);
-    console.log(variety);
 
-    // Check if the variety data is already an object or a string
-    let parsedVariety = (typeof variety === 'string') ? JSON.parse(variety) : variety;
 
     // Set values in the modal form
     $("#assets_id").val(id);
@@ -331,35 +326,6 @@ $('.togglerUpdateAssets').click(function (e) {
     $("#update_assets_condition").val(condition_status);
     $("#update_assets_Office").val(office_id);
     $("#update_assets_status").val(status);
-
-    // Display the variety name in the input field
-    if (parsedVariety && parsedVariety.name) {
-        $("#update_assets_variety_name").val(parsedVariety.name);
-    }
-
-    // Clear the previous variety values
-    $(".update_assets_variety_values").empty();
-
-    // Display the variety values as input fields
-    if (parsedVariety && parsedVariety.values) {
-        parsedVariety.values.forEach((value, index) => {
-            let newInputGroup = $('<div class="input-group mb-2 flex items-center"></div>');
-            let inputField = $('<input type="text" name="assets_variety_value[]" class="w-full p-2 border rounded-md" value="' + value + '" required>');
-            let removeButton = $('<button type="button" class="remove-btn p-1 bg-transparent text-red-500 text-lg font-bold border-none">X</button>');
-
-            // Append the input field and remove button into the input group
-            newInputGroup.append(inputField);
-            newInputGroup.append(removeButton);
-
-            // Add the new input group to the container
-            $('.update_assets_variety_values').append(newInputGroup);
-
-            // Attach click event to the remove button
-            removeButton.click(function () {
-                newInputGroup.remove();  // Remove the entire input group (input + button)
-            });
-        });
-    }
 
     // Show the modal
     $('#updateAssetsModal').fadeIn();

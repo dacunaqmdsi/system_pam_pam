@@ -79,7 +79,7 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
         <thead class="bg-gray-200">
             <tr>
                 <th class="border p-2">Request Item</th>
-                <th class="border p-2">Variety</th>
+                <!-- <th class="border p-2">Product Name</th> -->
                 <th class="border p-2">Request Quantity</th>
                 <th class="border p-2">Specification</th>
                 <!-- <th class="border p-2">Price</th>
@@ -97,7 +97,7 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                         <td class="border p-2 text-center"><?= $item['name'] ?></td>
                         <!-- <td class="border p-2 text-center"><?= $item['r_item_variety'] ?? 'N/A' ?> <small>(<?= $item['sss'] ?>)</small></td> -->
 
-                        <td class="border p-2 text-center">
+                        <td hidden class="border p-2 text-center">
                             <?= htmlspecialchars($item['r_item_variety'] ?? '') ?>
                             <?php
                             $specification = json_decode($item['r_specification_array'] ?? '', true); // decode JSON as array

@@ -93,7 +93,7 @@
                 <tr>
                     <th class="p-3">#</th>
                     <th class="p-3">QRcode</th>
-                    <th class="p-3">Image</th>
+                    <!-- <th class="p-3">Image</th> -->
                     <th class="p-3">Asset ID</th>
                     <th class="p-3">Name</th>
                     <th class="p-3">Description</th>
@@ -200,7 +200,7 @@
 
 
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="add_assets_img" class="block text-sm font-medium text-gray-700">Assets Image</label>
                 <input type="file" id="add_assets_img" name="assets_img" class="w-full p-2 border rounded-md">
             </div>
@@ -220,7 +220,7 @@
                 <input type="text" id="add_assets_name" name="assets_name" class="w-full p-2 border rounded-md" required>
             </div>
 
-            <div class="mb-4">
+            <div  class="mb-4">
                 <label for="add_assets_name" class="block text-sm font-medium text-gray-700">QTY</label>
                 <input type="number" id="qty" name="qty" class="w-full p-2 border rounded-md" required>
             </div>
@@ -330,7 +330,7 @@
             <!--  -->
             <!--  -->
             <!--  -->
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="size">Size</label>
                 <select name="size" id="size" class="w-full p-2 border rounded-md">
                     <option value="">Select Size if any</option>
@@ -356,7 +356,7 @@
             </div>
 
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="brand">Brand</label>
                 <select name="brand" id="brand" class="w-full p-2 border rounded-md">
                     <option value="">Select Brand if any</option>
@@ -368,7 +368,7 @@
                 </select>
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="unit">Quantity (Unit)</label>
                 <select name="unit" id="unit" class="w-full p-2 border rounded-md">
                     <option value="">Select Unit if any</option>
@@ -380,7 +380,7 @@
                 </select>
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="paper_type">Paper Type</label>
                 <select name="paper_type" id="paper_type" class="w-full p-2 border rounded-md">
                     <option value="">Select Paper Type if any</option>
@@ -393,7 +393,7 @@
                 </select>
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="thickness">Thickness</label>
                 <select name="thickness" id="thickness" class="w-full p-2 border rounded-md">
                     <option value="">Select Thickness if any</option>
@@ -438,12 +438,12 @@
 
 
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="assets_variety_name" class="block text-sm font-medium text-gray-700">Specification</label>
                 <input type="text" id="assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md">
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="assets_variety_value" class="block text-sm font-medium text-gray-700">More Specification</label>
                 <div id="variety-values-container">
                     <input type="text" name="assets_variety_value[]" class="w-full p-2 mb-2 border rounded-md">
@@ -482,13 +482,6 @@
 
 
             <input hidden type="text" id="assets_id" name="assets_id">
-
-
-            <div class="mb-4">
-                <label for="update_assets_img" class="block text-sm font-medium text-gray-700">Assets Image</label>
-                <input type="file" id="update_assets_img" name="assets_img" class="w-full p-2 border rounded-md">
-            </div>
-
             <div class="mb-4">
                 <label for="update_assets_code" class="block text-sm font-medium text-gray-700">Asset ID</label>
                 <input type="text" id="update_assets_code" name="assets_code" class="w-full p-2 border rounded-md" required>
@@ -496,15 +489,8 @@
 
             <div class="mb-4">
                 <label for="update_assets_name" class="block text-sm font-medium text-gray-700">Name</label>
-                <input type="text" id="update_assets_name" name="assets_name" class="w-full p-2 border rounded-md" required>
+                <input type="text" id="update_assets_name" name="assets_name_edit" class="w-full p-2 border rounded-md" required>
             </div>
-            <!-- 
-            <div class="mb-4">
-                <label for="add_assets_name" class="block text-sm font-medium text-gray-700">QTY</label>
-                <input type="text" id="update_qty" name="update_qty" class="w-full p-2 border rounded-md" required>
-            </div> -->
-
-
             <div class="mb-4">
                 <label for="update_assets_description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea id="update_assets_description" name="assets_description" class="w-full p-2 border rounded-md" rows="2"></textarea>
@@ -516,12 +502,9 @@
                 <input type="text" id="update_assets_price" name="assets_price" class="w-full p-2 border rounded-md">
             </div>
 
-
-
-
             <div class="mb-4">
                 <label for="update_assets_Office" class="block text-sm font-medium text-gray-700">Office</label>
-                <select name="assets_Office" id="update_assets_Office" class="w-full p-2 border rounded-md" required>
+                <select name="assets_Office_edit" id="update_assets_Office" class="w-full p-2 border rounded-md" required>
                     <option value="">Select Office</option>
                     <?php
                     $fetch_all_subcategory = $db->fetch_all_office();
@@ -543,7 +526,7 @@
 
             <div class="mb-4">
                 <label for="update_assets_category" class="block text-sm font-medium text-gray-700">Category</label>
-                <select name="assets_category" id="update_assets_category" class="w-full p-2 border rounded-md" required>
+                <select name="assets_category_edit" id="update_assets_category" class="w-full p-2 border rounded-md" required>
                     <option value="">Select Category</option>
                     <?php
                     $fetch_all_category = $db->fetch_all_category();
@@ -562,27 +545,9 @@
                 </select>
             </div>
 
-            <script>
-                // function show_p(id) {
-                //     const paperFields = [
-                //         document.getElementById("size").parentElement,
-                //         document.getElementById("brand").parentElement,
-                //         document.getElementById("unit").parentElement,
-                //         document.getElementById("paper_type").parentElement,
-                //         document.getElementById("thickness").parentElement
-                //     ];
-
-                //     if (id == 36) {
-                //         paperFields.forEach(field => field.hidden = false);
-                //     } else {
-                //         paperFields.forEach(field => field.hidden = true);
-                //     }
-                // }
-            </script>
-
             <div class="mb-4">
                 <label for="update_assets_subcategory" class="block text-sm font-medium text-gray-700">Subcategory</label>
-                <select name="assets_subcategory" id="update_assets_subcategory" class="w-full p-2 border rounded-md" required>
+                <select name="assets_subcategory_edit" id="update_assets_subcategory" class="w-full p-2 border rounded-md" required>
                     <option value="">Select Subcategory</option>
                     <?php
                     $fetch_all_subcategory = $db->fetch_all_subcategory();
@@ -602,75 +567,9 @@
             </div>
 
 
-            <div hidden class="mb-4">
-                <label for="size">Size</label>
-                <select name="size" id="size" class="w-full p-2 border rounded-md">
-                    <option value="">Select Size if any</option>
-                    <option value="Short">Short</option>
-                    <option value="Long">Long</option>
-                    <option value="A4">A4</option>
-                    <option value="A3">A3</option>
-                    <option value="Letter">Letter</option>
-                    <option value="Legal">Legal</option>
-                    <option value="Tabloid">Tabloid</option>
-                    <!-- Add more sizes as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="brand">Brand</label>
-                <select name="brand" id="brand" class="w-full p-2 border rounded-md">
-                    <option value="">Select Brand if any</option>
-                    <option value="Hardcopy">Hardcopy</option>
-                    <option value="Brand1">Brand1</option>
-                    <option value="Brand2">Brand2</option>
-                    <option value="Brand3">Brand3</option>
-                    <!-- Add more brands as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="unit">Quantity (Unit)</label>
-                <select name="unit" id="unit" class="w-full p-2 border rounded-md">
-                    <option value="">Select Unit if any</option>
-                    <option value="PC">Piece (PC)</option>
-                    <option value="Ream">Ream</option>
-                    <option value="Box">Box</option>
-                    <option value="Pack">Pack</option>
-                    <!-- Add more units as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="paper_type">Paper Type</label>
-                <select name="paper_type" id="paper_type" class="w-full p-2 border rounded-md">
-                    <option value="">Select Paper Type if any</option>
-                    <option value="Copier">Copier</option>
-                    <option value="Multipurpose">Multipurpose</option>
-                    <option value="Digital">Digital</option>
-                    <option value="Glossy">Glossy</option>
-                    <option value="Matte">Matte</option>
-                    <!-- Add more paper types as required -->
-                </select>
-            </div>
-
-            <div hidden class="mb-4">
-                <label for="thickness">Thickness</label>
-                <select name="thickness" id="thickness" class="w-full p-2 border rounded-md">
-                    <option value="">Select Thickness if any</option>
-                    <option value="70gsm">70gsm</option>
-                    <option value="80gsm">80gsm</option>
-                    <option value="90gsm">90gsm</option>
-                    <option value="100gsm">100gsm</option>
-                    <option value="120gsm">120gsm</option>
-                    <!-- Add more thickness options as required -->
-                </select>
-            </div>
-
-
             <div class="mb-4">
                 <label for="update_assets_condition" class="block text-sm font-medium text-gray-700">Condition</label>
-                <select name="assets_condition" id="update_assets_condition" class="w-full p-2 border rounded-md" required>
+                <select name="assets_condition_edit" id="update_assets_condition" class="w-full p-2 border rounded-md" required>
                     <option value="New">New</option>
                     <option value="Good">Good</option>
                     <option value="Needs Repair">Needs Repair</option>
@@ -681,7 +580,7 @@
 
             <div class="mb-4">
                 <label for="update_assets_status" class="block text-sm font-medium text-gray-700">Status</label>
-                <select name="assets_status" id="update_assets_status" class="w-full p-2 border rounded-md" required>
+                <select name="assets_status_edit" id="update_assets_status" class="w-full p-2 border rounded-md" required>
                     <option value="Available">Available</option>
                     <option value="Assigned">Assigned</option>
                     <option value="Under Maintenance">Under Maintenance</option>

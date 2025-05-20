@@ -29,7 +29,7 @@ if ($fetch_all_user->num_rows > 0):
                 <?php endif; ?>
             </td>
 
-            <td class="p-2">
+            <!-- <td hidden class="p-2">
                 <div class="flex items-center justify-center w-12 h-12">
                     <?php if (!empty($user['image'])): ?>
                         <img src="../uploads/images/<?php echo htmlspecialchars($user['image']); ?>"
@@ -39,7 +39,7 @@ if ($fetch_all_user->num_rows > 0):
                         <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i>
                     <?php endif; ?>
                 </div>
-            </td>
+            </td> -->
 
 
             <td class="p-2"><?php echo htmlspecialchars($user['asset_code']); ?></td>
@@ -93,23 +93,20 @@ if ($fetch_all_user->num_rows > 0):
                         data-asset_code="<?= htmlspecialchars($user['asset_code']) ?>"
                         data-name="<?= htmlspecialchars($user['name']) ?>"
                         data-qty="<?= htmlspecialchars($user['qty'] ?? 0) ?>"
-
                         data-category_id="<?= htmlspecialchars($user['category_id']) ?>"
                         data-subcategory_id="<?= htmlspecialchars($user['subcategory_id']) ?>"
                         data-condition_status="<?= htmlspecialchars($user['condition_status']) ?>"
                         data-office_id="<?= htmlspecialchars($user['office_id']) ?>"
-                        data-purchase_date="<?= htmlspecialchars($user['purchase_date']) ?>"
                         data-status="<?= htmlspecialchars($user['status']) ?>"
                         data-price="<?= htmlspecialchars($user['price']) ?>"
-                        data-description="<?= htmlspecialchars($user['description']) ?>"
-                        data-variety="<?= htmlspecialchars($user['variety']) ?>">
+                        data-description="<?= htmlspecialchars($user['description']) ?>">
                         Update
                     </button>
-
+<!-- 
                     <button class="bg-red-500 text-white py-1 px-3 rounded-md togglerDeleteAssets"
                         data-id="<?= htmlspecialchars($user['id']) ?>">
                         Remove
-                    </button>
+                    </button> -->
                 </td>
             <?php } ?>
         </tr>

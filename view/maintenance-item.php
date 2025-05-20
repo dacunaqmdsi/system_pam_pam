@@ -47,7 +47,7 @@
                 <thead class="bg-gray-100 text-left">
                     <tr>
                         <th class="p-3 font-medium">#</th>
-                        <th class="p-3 font-medium">Image</th>
+                        <!-- <th class="p-3 font-medium">Image</th> -->
                         <th class="p-3 font-medium">Asset ID</th>
                         <th class="p-3 font-medium">Name</th>
                         <th class="p-3 font-medium">Description</th>

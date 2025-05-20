@@ -127,8 +127,8 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                                     <!-- <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i> -->
                                 <?php endif; ?>
                                 <h3 class="font-bold"><?php echo htmlspecialchars(ucfirst($assets['name'])); ?></h3>
-                                <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart" data-asset_id='<?= $assets['id'] ?>' data-name='<?= ucfirst($assets['name']) ?>' data-variety='<?= $assets['variety'] ?>'>
-                                    <span class="material-icons align-middle mr-1">add</span>
+                                <button class="mt-2 w-full  text-white py-2 rounded togglerViewCart" data-asset_id='<?= $assets['id'] ?>' data-name='<?= ucfirst($assets['name']) ?>' data-variety='<?= $assets['variety'] ?>'>
+                                    <!-- <span class="material-icons align-middle mr-1">add</span> -->
                                 </button>
                             </div>
                         <?php endwhile; ?>
@@ -299,12 +299,12 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                     </div>
 
 
-                    <div class="mb-4">
+                    <div hidden class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Specification</label>
                         <input type="text" id="specification_name" name="specification_name" class="w-full p-2 border rounded-md">
                     </div>
 
-                    <div class="mb-4">
+                    <div hidden class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">More Specification</label>
                         <div id="specification-values-container">
                             <input type="text" name="specification_name_value[]" class="w-full p-2 mb-2 border rounded-md">

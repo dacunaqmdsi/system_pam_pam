@@ -59,8 +59,8 @@
 <div align="right"><a href="request">BACK</a></div>
 
 <!-- Modal for Adding Promo -->
-<div id="">
-    <div class="bg-white rounded-lg shadow-lg w-[40rem] max-h-[80vh] overflow-y-auto p-6">
+<div class="flex justify-center items-center min-h-screen">
+    <div class="bg-white rounded-lg shadow-lg w-[70rem]  overflow-y-auto p-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Assets</h3>
         <form id="addAssetFrm">
 
@@ -73,7 +73,7 @@
 
 
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="add_assets_img" class="block text-sm font-medium text-gray-700">Assets Image</label>
                 <input type="file" id="add_assets_img" name="assets_img" class="w-full p-2 border rounded-md">
             </div>
@@ -93,9 +93,9 @@
                 <input type="text" id="add_assets_name" name="assets_name" class="w-full p-2 border rounded-md" required>
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="add_assets_name" class="block text-sm font-medium text-gray-700">QTY</label>
-                <input type="number" id="qty" name="qty" class="w-full p-2 border rounded-md" required>
+                <input type="number" id="qty" value="1" name="qty" class="w-full p-2 border rounded-md" required>
             </div>
 
 
@@ -297,24 +297,24 @@
 
 
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="assets_variety_name" class="block text-sm font-medium text-gray-700">Specification</label>
-                <input type="text" id="assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md">
+                <input type="text" value=" " id="assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md">
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="assets_variety_value" class="block text-sm font-medium text-gray-700">More Specification</label>
                 <div id="variety-values-container">
-                    <input type="text" name="assets_variety_value[]" class="w-full p-2 mb-2 border rounded-md">
+                    <input type="text" value=" " name="assets_variety_value[]" class="w-full p-2 mb-2 border rounded-md">
                 </div>
                 <button type="button" class="add-variety-value mt-2 text-blue-500">Add Another Specification</button>
             </div>
 
-                <input type="text" hidden value="1" name="is_item"/>
+            <input type="text" hidden value="1" name="is_item" />
 
 
             <div class="flex justify-end gap-2">
-                <button type="button" class="addUserModalClose bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded-md">Cancel</button>
+                <!-- <button type="button" class="addUserModalClose bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded-md">Cancel</button> -->
                 <button id="btnAddAssets" type="submit" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md">Add new</button>
             </div>
         </form>

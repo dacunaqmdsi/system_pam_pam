@@ -36,7 +36,7 @@ if ($fetch_all_user->num_rows > 0):
                    
                 
                     <?php if (isset($On_Session[0]['role']) && $On_Session[0]['role'] == "Administrator") { ?>
-                        <select class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
+                        <select hidden class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
                             data-request_id="<?= htmlspecialchars($user['request_id']) ?>"
                             aria-label="Select User Status">
                             <!-- Only show Pending if status is not Delivered -->
@@ -64,7 +64,7 @@ if ($fetch_all_user->num_rows > 0):
 
                     <!-- Other heads -->
                     <?php if (isset($On_Session[0]['role']) && ($On_Session[0]['role'] == "Head Library" || $On_Session[0]['role'] == "Head Basic Education" || $On_Session[0]['role'] == "Head IACEPO & NSTP")) { ?>
-                        <select class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
+                        <select hidden class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
                             data-request_id="<?= htmlspecialchars($user['request_id']) ?>"
                             aria-label="Select User Status">
                             <!-- Only show Pending if status is not Delivered -->
@@ -84,7 +84,7 @@ if ($fetch_all_user->num_rows > 0):
 
                     <!-- Head of Finance -->
                     <?php if (isset($On_Session[0]['role']) && $On_Session[0]['role'] == "Head Finance") { ?>
-                        <select class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
+                        <select hidden class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
                             data-request_id="<?= htmlspecialchars($user['request_id']) ?>"
                             aria-label="Select User Status">
                             <!-- Only show Pending if status is not Delivered -->

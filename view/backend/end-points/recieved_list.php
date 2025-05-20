@@ -1,6 +1,6 @@
 <?php
 
-$fetch_all_receive_logs = $db->fetch_all_receive_logs();
+$fetch_all_receive_logs = $db->fetch_all_receive_logs($_SESSION['id']);
 
 // echo "<pre>";
 // print_r($fetch_all_receive_logs);
