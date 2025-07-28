@@ -13,6 +13,9 @@ if ($fetch_all_receive_logs->num_rows > 0) :
     <?php endwhile; ?>
 <?php else : ?>
     <tr>
-        <td colspan="4" class="p-2 text-center">No record found.</td>
+        <td  class="p-2 text-center">No record found.</td>
+        <td  class="p-2 text-center">No record found.</td>
+        <td  class="p-2 text-center">No record found.</td>
+        <td  class="p-2 text-center">No record found.</td>
     </tr>
 <?php endif; ?>

@@ -45,10 +45,14 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads")
                 paging: true,
                 searching: true,
                 ordering: true,
-                info: true
+                info: true,
+                language: {
+                    emptyTable: "No users found"
+                }
             });
         });
     </script>
+
     <!-- User Table Card -->
     <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
         <button id="adduserButton" class="bg-red-500 text-white py-2 px-4 text-sm rounded-lg flex items-center hover:bg-red-600 transition duration-300 mb-4">

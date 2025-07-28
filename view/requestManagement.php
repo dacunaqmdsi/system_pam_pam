@@ -45,20 +45,15 @@
 
 <script>
     $(document).ready(function() {
-        var table = $('#userTable');
-
-        // Check if the table has any rows (excluding the header)
-        if (table.find('tbody tr').length > 0) {
-            table.DataTable({
-                paging: true,
-                searching: true,
-                ordering: true,
-                info: true
-            });
-        } else {
-            // No records, you can handle it differently if needed (no alert)
-            console.log("No records to display.");
-        }
+        $('#userTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            language: {
+                emptyTable: "No users found"
+            }
+        });
     });
 </script>
 

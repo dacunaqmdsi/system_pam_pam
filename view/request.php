@@ -26,14 +26,6 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                     </span>
                 <?php endif; ?>
             </a>
-
-
-
-            <!-- icon
-            darren
-            list of na approved..
-
-            descending order. -->
         </div>
         <span class="text-gray-700 font-medium">
             <?php echo ucfirst($On_Session[0]['fullname']); ?>
@@ -375,34 +367,63 @@ $conn = mysqli_connect("localhost", "root", "", "pam");
                         let totalItems = 0;
                         let totalPrice = 0;
 
+                        // let cartItemsHtml = globalCartItems.map((item, index) => {
+                        //     let price = parseFloat(item.price) || 0;
+                        //     let specification = item.specification;
+                        //     let specification_array = item.specification_array;
+                        //     let size = item.size;
+                        //     let brand = item.brand;
+                        //     let unit = item.unit;
+                        //     let paper_type = item.paper_type;
+                        //     let thickness = item.thickness;
+
+                        //     let subtotal = price * (item.cart_qty || 0);
+                        //     totalItems += item.cart_qty;
+                        //     totalPrice += subtotal;
+                        //     return `
+                        //         <div class="cart-item flex justify-between items-center p-4 border-b border-gray-300" id="cart-item-${item.cart_id}">
+                        //             <p class="text-sm text-gray-700">${item.name} (${item.cart_variety}) x${item.cart_qty} - ₱${subtotal.toFixed(2)}</p>
+                        //             <p>d</p>
+                        //             <button class="remove-btn text-red-500 hover:text-red-700 focus:outline-none" data-cart_id="${item.cart_id}">
+                        //                 <span class="material-icons">close</span>
+                        //             </button>
+                        //         </div>
+                        //     `;
+
+                        // }).join("");
                         let cartItemsHtml = globalCartItems.map((item, index) => {
                             let price = parseFloat(item.price) || 0;
-                            let specification = item.specification;
-                            let specification_array = item.specification_array;
-                            let size = item.size;
-                            let brand = item.brand;
-                            let unit = item.unit;
-                            let paper_type = item.paper_type;
-                            let thickness = item.thickness;
-
-
-
-
-
-
                             let subtotal = price * (item.cart_qty || 0);
                             totalItems += item.cart_qty;
                             totalPrice += subtotal;
-                            return `
-                    <div class="cart-item flex justify-between items-center p-4 border-b border-gray-300" id="cart-item-${item.cart_id}">
-                        <p class="text-sm text-gray-700">${item.name} (${item.cart_variety}) x${item.cart_qty} - ₱${subtotal.toFixed(2)}</p>
-                        <button class="remove-btn text-red-500 hover:text-red-700 focus:outline-none" data-cart_id="${item.cart_id}">
-                            <span class="material-icons">close</span>
-                        </button>
-                    </div>
-                `;
 
+                            // Specification Details
+                            let specs = [];
+                            if (item.specification) specs.push(`Specification: ${item.specification}`);
+                            if (item.specification_array) specs.push(`Specs: ${item.specification_array}`);
+                            if (item.size) specs.push(`Size: ${item.size}`);
+                            if (item.brand) specs.push(`Brand: ${item.brand}`);
+                            if (item.unit) specs.push(`Unit: ${item.unit}`);
+                            if (item.paper_type) specs.push(`Paper Type: ${item.paper_type}`);
+                            if (item.thickness) specs.push(`Thickness: ${item.thickness}`);
+
+                            let specsHtml = specs.length ? `<p class="text-xs text-gray-500 mt-1">${specs.join(" | ")}</p>` : "";
+
+                            return `
+        <div class="cart-item flex justify-between items-center p-4 border-b border-gray-300" id="cart-item-${item.cart_id}">
+            <div>
+                <p class="text-sm text-gray-700 font-medium">
+                    ${item.name} (${item.cart_variety}) x${item.cart_qty}
+                </p>
+                ${specsHtml}
+            </div>
+            <button class="remove-btn text-red-500 hover:text-red-700 focus:outline-none" data-cart_id="${item.cart_id}">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+    `;
                         }).join("");
+
 
                         $("#cartItemsList").html(cartItemsHtml);
                         $("#cartTotalPrice").text(`₱${totalPrice.toFixed(2)}`);

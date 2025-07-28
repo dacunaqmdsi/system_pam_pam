@@ -1210,7 +1210,7 @@ class global_class extends db_connect
                 request_item.r_item_price,
                 request_item.r_item_variety,
                 request.request_status,
-                assets.name,
+                assets_item.name,
                 request_item.r_specification_array,
                 request_item.r_size,
                 request_item.r_brand,
@@ -1218,7 +1218,7 @@ class global_class extends db_connect
                 request_item.r_paper_type,
                 request_item.r_thickness
             FROM `request_item`
-            LEFT JOIN assets ON assets.id = request_item.r_item_asset_id
+            LEFT JOIN assets_item ON assets_item.id = request_item.r_item_asset_id
             LEFT JOIN request ON request.request_id = request_item.r_request_id
             WHERE request_item.r_request_id = ?
             ORDER BY request_item.r_request_id DESC
@@ -1643,7 +1643,7 @@ class global_class extends db_connect
                 c.paper_type,
                 c.thickness
             FROM request_cart c 
-            JOIN assets a ON c.cart_asset_id = a.id
+            JOIN assets_item a ON c.cart_asset_id = a.id
             WHERE c.cart_user_id = ?
         ");
 

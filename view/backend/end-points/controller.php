@@ -411,7 +411,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-
+        
 
         // Build Specification JSON
         $specification_name = htmlspecialchars(trim($_POST['specification_name'] ?? ''));
